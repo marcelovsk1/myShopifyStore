@@ -17,9 +17,9 @@
   {% endcase %}
 
   <div class="collection-grid">
-    <ul class="grid grid--uniform">
+    <ul class="grid grid--uniform" id="collection-grid">
       {% for block in section.blocks limit: section.blocks.size %}
-        <li class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }}>
+        <li class="grid__item {{ grid_item_width }}" {{ block.shopify_attributes }} id="collection-grid-item">
           {%- assign collection = collections[block.settings.collection] -%}
           {% include 'collection-grid-item', collection: collection %}
         </li>

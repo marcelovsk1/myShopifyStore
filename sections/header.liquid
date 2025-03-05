@@ -11,6 +11,31 @@
         margin: 0;
       }
     {% endif %}
+
+    .site-header__search-form {
+      display: flex;
+      align-items: center;
+      background-color: #f5f5f5;
+      border-radius: 20px;
+      padding: 5px 10px;
+    }
+
+    .site-header__search-input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: #666;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+
+    .site-header__search-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #666;
+      font-size: 16px;
+    }
   </style>
 {% endif %}
 
@@ -111,10 +136,10 @@
       <div class="grid__item {% if section.settings.align_logo == 'left' %}medium-up--one-quarter{% else %}medium-up--one-third medium-up--push-one-third{% endif %} text-right site-header__icons{% if shop.customer_accounts_enabled %} site-header__icons--plus{% endif %}">
         <div class="site-header__icons-wrapper">
 
-          <button type="button" class="btn--link site-header__icon site-header__search-toggle js-drawer-open-top">
-            {% include 'icon-search' %}
-            <span class="icon__fallback-text">{{ 'layout.navigation.search' | t }}</span>
-          </button>
+          <form action="{{ routes.search_url }}" method="get" class="site-header__search-form">
+            <input type="text" name="q" placeholder="Search..." class="site-header__search-input">
+            {% comment %} <button type="submit" class="site-header__search-button">Search</button> {% endcomment %}
+          </form>
 
           {% if shop.customer_accounts_enabled %}
             {% if customer %}
@@ -253,6 +278,21 @@
   {% endif %}
 </div>
 
+<style>
+
+  .site-header__search-input {
+    border-radius: 20px;
+    height: 30px;
+  }
+
+  @media only screen and (max-width: 749px) {
+    .site-header__logo {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: left;
+    }
+}
+</style>
 
 
 <script type="application/ld+json">
