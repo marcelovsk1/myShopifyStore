@@ -6495,7 +6495,7 @@ $transition-controls-slideshow: color 0.2s $ease-transition,
     display: block;
     position: relative;
     top: -1.1rem;
-    background-color: $color-bg;
+    background-color: transparent !important;
     width: 85%;
     margin: 0 0 -1.1rem 7.5%;
   }
@@ -8311,8 +8311,8 @@ $transition-controls-video: color 0.2s $ease-transition, background-color 0.2s $
 }
 
 .autoplay .video-is-loaded .video--background {
-  display: block;
-  visibility: visible;
+  display: none;
+  // visibility: visible;
   opacity: 1;
 }
 
