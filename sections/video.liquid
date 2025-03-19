@@ -40,7 +40,15 @@
           <span class="icon__fallback-text">{{ 'sections.video.close' | t: video_title: '[video_title]' }}</span>
         </span>
       </button>
-      {%- if section.settings.video_link != blank -%}
+      {%- if section.settings.video_link contains 'gif' -%}
+        <div id="Video-{{ section.id }}"
+            class="video{% if section.settings.style == 'background' %} video--background{% endif %}
+            video--{{ section.settings.style }} video--gif"
+            data-id="{{ section.settings.video_link }}"
+            data-type="{{ section.settings.style }}">
+          <img src="{{ section.settings.video_link }}" alt="{{ section.settings.video_title | escape }}" class="gif-video">
+        </div>
+      {%- else -%}
         <div id="Video-{{ section.id }}"
             class="video{% if section.settings.style == 'background' %} video--background{% endif %}
             video--{{ section.settings.style }}"
@@ -98,6 +106,18 @@
         </div>
       </div>
 
+      {% if section.settings.end_screen_image != blank %}
+        <div class="video-end-screen video-end-screen--{{ section.id }}">
+          <div class="video-end-screen__image" style="background-image: url('{{ section.settings.end_screen_image | img_url: '1200x' }}');">
+            {% if section.settings.end_screen_button_text != blank and section.settings.end_screen_button_link != blank %}
+              <button class="btn video-end-screen__button" data-url="{{ section.settings.end_screen_button_link }}">
+                {{ section.settings.end_screen_button_text }}
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
       <div class="video-control__play-wrapper-mobile">
         {%- if section.settings.video_link != blank -%}
           <div class="video-play-loader"></div>
@@ -118,6 +138,10 @@
           <span class="icon__fallback-text">{{ 'sections.video.resume' | t: video_title: '[video_title]' }}</span>
         </span>
       </button>
+      
+      <!-- Campo oculto para detectar GIF -->
+      <input type="hidden" id="is-gif-{{ section.id }}" value="{% if section.settings.video_link contains 'gif' %}true{% else %}false{% endif %}" />
+      <input type="hidden" id="has-end-screen-{{ section.id }}" value="{% if section.settings.end_screen_image != blank %}true{% else %}false{% endif %}" />
     </div>
   {%- else -%}
     <div class="placeholder-noblocks">
@@ -125,6 +149,86 @@
     </div>
   {%- endif -%}
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Variável para o player do YouTube
+    var player;
+    
+    // Verificar se é um GIF
+    var isGif = document.querySelector('#Video-{{ section.id }}.video--gif') !== null;
+    var hasEndScreen = {% if section.settings.end_screen_image != blank %}true{% else %}false{% endif %};
+    
+    // Para GIFs, configurar o timer para mostrar a tela final após 5 segundos
+    if (isGif && hasEndScreen) {
+      console.log('GIF detectado, configurando timer de 5 segundos');
+      setTimeout(function() {
+        var endScreen = document.querySelector('.video-end-screen--{{ section.id }}');
+        if (endScreen) {
+          endScreen.classList.add('active');
+          
+          // Esconder o GIF quando a tela final aparecer
+          var gifVideo = document.querySelector('.gif-video');
+          if (gifVideo) {
+            gifVideo.style.opacity = '0';
+          }
+        }
+      }, 5000); // 5 segundos
+    }
+    
+    // Função para inicializar o vídeo do YouTube
+    function onYouTubeIframeAPIReady() {
+      var videoElement = document.getElementById('Video-{{ section.id }}');
+      
+      if (!videoElement || isGif) return;
+      
+      var videoId = videoElement.getAttribute('data-id');
+      
+      // Para vídeos normais do YouTube, continua com o comportamento padrão
+      player = new YT.Player('Video-{{ section.id }}', {
+        videoId: videoId,
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+    
+    // Função para manipular eventos de mudança de estado do player
+    function onPlayerStateChange(event) {
+      // Quando o vídeo terminar (estado 0)
+      if (event.data === 0) {
+        var endScreen = document.querySelector('.video-end-screen--{{ section.id }}');
+        if (endScreen) {
+          endScreen.classList.add('active');
+        }
+      }
+    }
+    
+    // Carregar a API do YouTube para vídeos não-GIF
+    if (!isGif) {
+      if (typeof YT === 'undefined') {
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
+      } else {
+        onYouTubeIframeAPIReady();
+      }
+    }
+    
+    // Inicializar botão da tela final
+    var endScreenButton = document.querySelector('.video-end-screen__button');
+    if (endScreenButton) {
+      endScreenButton.addEventListener('click', function() {
+        var url = this.getAttribute('data-url');
+        if (url) {
+          window.location.href = url;
+        }
+      });
+    }
+  });
+</script>
 
 {% schema %}
 {
@@ -746,6 +850,27 @@
           "value": "large"
         }
       ]
+    },
+    {
+      "type": "header",
+      "content": "Tela de fim de vídeo"
+    },
+    {
+      "type": "image_picker",
+      "id": "end_screen_image",
+      "label": "Imagem de fim de vídeo",
+      "info": "Esta imagem será exibida quando o vídeo terminar"
+    },
+    {
+      "type": "text",
+      "id": "end_screen_button_text",
+      "label": "Texto do botão",
+      "default": "Saiba mais"
+    },
+    {
+      "type": "url",
+      "id": "end_screen_button_link",
+      "label": "Link do botão"
     }
   ],
   "presets": [
@@ -819,5 +944,66 @@
   .index-section.video-section {
     margin-top: 0 !important;
     padding-top: 0 !important;
+  }
+  
+  /* Estilos para a tela final do vídeo */
+  .video-end-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+  
+  .video-end-screen.active {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .video-end-screen__image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .video-end-screen__button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .video-end-screen__button:hover {
+    background-color: #333;
+  }
+  
+  /* Estilos para GIFs */
+  .video--gif {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .gif-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 0.5s ease;
   }
 </style>

@@ -1,4 +1,4 @@
-<div class="page-width">
+<div class="pages-width">
   {% if section.settings.title != blank %}
     <div class="section-header text-center">
       <h2>{{ section.settings.title | escape }}</h2>
@@ -32,7 +32,29 @@
   {% endif %}
 </div>
 
-
+{% style %}
+  .collection-grid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .collection-grid .grid {
+    margin-left: 0;
+  }
+  
+  .collection-grid .grid__item {
+    padding-left: 0;
+  }
+  
+  @media screen and (max-width: 749px) {
+    .pages-width {
+      padding-left: 20px;
+      padding-right: 0;
+    }
+  }
+{% endstyle %}
 
 {% schema %}
 {
