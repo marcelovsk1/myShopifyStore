@@ -7830,3 +7830,50 @@ function onYouTubeIframeAPIReady() {
 }
 
 $(theme.init);
+
+/*================ Product Slider ================*/
+theme.ProductSlider = (function() {
+  function ProductSlider() {
+    this.init();
+  }
+  
+  ProductSlider.prototype = Object.assign({}, ProductSlider.prototype, {
+    init: function() {
+      const sliders = document.querySelectorAll('.js-product-slider');
+      
+      sliders.forEach(slider => {
+        const prevButton = slider.parentNode.querySelector('.product-slider__button--prev');
+        const nextButton = slider.parentNode.querySelector('.product-slider__button--next');
+        const slides = slider.querySelectorAll('.product-slider__slide');
+        
+        if (slides.length <= 0) return;
+        
+        // Calcula a largura do slide para scroll
+        const slideWidth = slides[0].offsetWidth;
+        
+        if (prevButton) {
+          prevButton.addEventListener('click', () => {
+            slider.scrollBy({
+              left: -slideWidth,
+              behavior: 'smooth'
+            });
+          });
+        }
+        
+        if (nextButton) {
+          nextButton.addEventListener('click', () => {
+            slider.scrollBy({
+              left: slideWidth,
+              behavior: 'smooth'
+            });
+          });
+        }
+      });
+    }
+  });
+  
+  return ProductSlider;
+})();
+
+// Inicializa o slider de produtos
+theme.productSlider = new theme.ProductSlider();

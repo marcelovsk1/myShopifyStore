@@ -1,0 +1,30 @@
+{% comment %}
+    Renders a product collection as a slider
+    Accepts:
+    - collection: {Object} Collection Liquid object (required)
+    - section: {Object} Section settings (required)
+    - show_vendor: {Boolean} Show the product's vendor (optional)
+{% endcomment %}
+
+<div class="product-slider-wrapper">
+  {% if collection.products.size > 0 %}
+    <div class="product-slider js-product-slider">
+      {% for product in collection.products %}
+        <div class="product-slider__slide">
+          {% include 'product-card-grid', max_height: section.settings.grid | times: 55, product: product, show_vendor: section.settings.show_vendor %}
+        </div>
+      {% endfor %}
+    </div>
+    
+    <div class="product-slider__buttons">
+      <button class="product-slider__button product-slider__button--prev" aria-label="Slide anterior">
+        {% include 'icon-arrow-left' %}
+      </button>
+      <button class="product-slider__button product-slider__button--next" aria-label="Próximo slide">
+        {% include 'icon-arrow-right' %}
+      </button>
+    </div>
+  {% else %}
+    <p>Não há produtos nesta coleção</p>
+  {% endif %}
+</div> 

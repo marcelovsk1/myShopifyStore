@@ -1,0 +1,304 @@
+{% assign collection = collections[section.settings.collection] %}
+{% assign product_limit = section.settings.products_to_show %}
+
+<div class="page-width">
+  <div class="section-header text-center">
+    {% if section.settings.title != blank %}
+      <h2>{{ section.settings.title | escape }}</h2>
+    {% endif %}
+    {% if section.settings.text != blank %}
+      <div class="rte">{{ section.settings.text }}</div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="featured-collection-slider" data-section-id="{{ section.id }}" data-section-type="featured-collection-slider">
+  <div class="page-width">
+    {% if collection and collection.products.size > 0 %}
+      <div class="featured-collection-slider__container">
+        <div class="featured-collection-slider__wrapper js-draggable-slider">
+          {% for product in collection.products limit: product_limit %}
+            <div class="featured-collection-slider__slide">
+              <div class="card-wrapper">
+                <div class="card card--product">
+                  <div class="card__inner">
+                    <a href="{{ product.url | within: collection }}" class="card__media-link">
+                      <div class="card__media">
+                        {% if product.featured_media %}
+                          <img 
+                            src="{{ product.featured_media | img_url: '345x' }}" 
+                            alt="{{ product.featured_media.alt | escape }}"
+                            loading="lazy"
+                            class="card__image"
+                            width="345"
+                            height="{{ 345 | divided_by: product.featured_media.aspect_ratio | round }}">
+                        {% else %}
+                          {{ 'product-1' | placeholder_svg_tag: 'card__image' }}
+                        {% endif %}
+                      </div>
+                    </a>
+                    <div class="card__content">
+                      <div class="card__information">
+                        <h3 class="card__heading">
+                          <a href="{{ product.url | within: collection }}" class="full-unstyled-link">
+                            {{ product.title | escape }}
+                          </a>
+                        </h3>
+                        <div class="card__price">
+                          {% if product.price_varies %}
+                            <span>A partir de {{ product.price_min | money_without_trailing_zeros }}</span>
+                          {% else %}
+                            <span>{{ product.price | money_without_trailing_zeros }}</span>
+                          {% endif %}
+                          
+                          {% if product.compare_at_price > product.price %}
+                            <span class="visually-hidden">Preço regular</span>
+                            <s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="collection-slider-placeholder page-width">
+        <div class="placeholder-content">
+          <div class="placeholder-content__heading placeholder"></div>
+          <div class="placeholder-content__paragraph placeholder"></div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .featured-collection-slider {
+    margin-bottom: 50px;
+  }
+  .featured-collection-slider__container {
+    position: relative;
+    overflow: hidden;
+    margin: 0 -20px;
+  }
+  .featured-collection-slider__wrapper {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    padding: 10px 0;
+    margin: 0 20px;
+    cursor: grab;
+  }
+  .featured-collection-slider__wrapper::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  .featured-collection-slider__wrapper.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+  .featured-collection-slider__slide {
+    flex: 0 0 85%;
+    padding: 0 10px;
+    box-sizing: border-box;
+    scroll-snap-align: start;
+  }
+  @media screen and (min-width: 750px) {
+    .featured-collection-slider__slide {
+      flex: 0 0 45%;
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .featured-collection-slider__slide {
+      flex: 0 0 30%;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .featured-collection-slider__slide {
+      flex: 0 0 23%;
+    }
+  }
+  .card-wrapper {
+    height: 100%;
+  }
+  .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .card__inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .card__media {
+    position: relative;
+    overflow: hidden;
+  }
+  .card__image {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.3s ease;
+  }
+  .card__media-link:hover .card__image {
+    transform: scale(1.05);
+  }
+  .card__content {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .card__information {
+    flex-grow: 1;
+  }
+  .card__heading {
+    margin: 0 0 5px;
+    font-size: 1rem;
+  }
+  .collection-slider-placeholder {
+    padding: 40px 0;
+  }
+  .placeholder-content__heading {
+    height: 20px;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto 20px;
+  }
+  .placeholder-content__paragraph {
+    height: 80px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .placeholder {
+    background: #f6f6f6;
+    position: relative;
+    overflow: hidden;
+  }
+  .placeholder::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+    animation: loading 1.5s infinite;
+  }
+  @keyframes loading {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('.js-draggable-slider');
+    
+    sliders.forEach(function(slider) {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+      
+      // Mouse events
+      slider.addEventListener('mousedown', function(e) {
+        isDown = true;
+        slider.classList.add('dragging');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+      
+      slider.addEventListener('mouseleave', function() {
+        isDown = false;
+        slider.classList.remove('dragging');
+      });
+      
+      slider.addEventListener('mouseup', function() {
+        isDown = false;
+        slider.classList.remove('dragging');
+      });
+      
+      slider.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault(); // Prevenir seleção de texto durante arrasto
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Velocidade de scroll (ajuste conforme necessário)
+        slider.scrollLeft = scrollLeft - walk;
+      });
+      
+      // Para dispositivos touch, deixamos o comportamento nativo funcionar
+      // pois ele já é otimizado para touch
+      
+      // Prevenir que links sejam clicados durante arrasto
+      const links = slider.querySelectorAll('a');
+      links.forEach(link => {
+        link.addEventListener('click', function(e) {
+          if (slider.classList.contains('dragging')) {
+            e.preventDefault();
+          }
+        });
+      });
+      
+      // Prevenir arrasto de imagens
+      const images = slider.querySelectorAll('img');
+      images.forEach(img => {
+        img.addEventListener('dragstart', e => e.preventDefault());
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Coleção Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Coleção em Destaque"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Exiba seus produtos em destaque em um slider elegante</p>"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Coleção"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Número de produtos para mostrar"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Coleção Slider",
+      "category": "Coleção",
+      "settings": {
+        "products_to_show": 8
+      }
+    }
+  ]
+}
+{% endschema %} 
