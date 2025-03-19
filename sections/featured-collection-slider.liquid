@@ -35,6 +35,7 @@
                         {% else %}
                           {{ 'product-1' | placeholder_svg_tag: 'card__image' }}
                         {% endif %}
+                        <a href="{{ product.url | within: collection }}" class="card__view-button">View</a>
                       </div>
                     </a>
                     <div class="card__content">
@@ -90,10 +91,10 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
     padding: 10px 0;
-    margin: 0 20px;
+    {% comment %} margin: 0 20px; {% endcomment %}
     cursor: grab;
   }
   .featured-collection-slider__wrapper::-webkit-scrollbar {
@@ -126,6 +127,7 @@
   }
   .card-wrapper {
     height: 100%;
+    background: transparent; 
   }
   .card {
     height: 100%;
@@ -136,32 +138,98 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    {% comment %} background: transparent;  {% endcomment %}
   }
   .card__media {
     position: relative;
     overflow: hidden;
+    padding-bottom: 100%;
+    width: 100%;
+    height: 0; 
+    margin-bottom: 10px;
+    background: #f1f1f1;
   }
   .card__image {
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.3s ease;
+  }
+  .card__view-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: black;
+    font-weight: bold;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-transform: uppercase;
+    z-index: 2;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  @media screen and (min-width: 750px) {
+    /* Efeito hover apenas em telas maiores que 750px */
+    .card__view-button {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .card__media:hover .card__view-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @media screen and (max-width: 749px) {
+    /* Em dispositivos móveis, o botão é sempre visível */
+    .card__view-button {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .card__view-button:hover {
+    background-color: rgba(0, 0, 0, 0.9);
   }
   .card__media-link:hover .card__image {
     transform: scale(1.05);
   }
   .card__content {
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+    padding: 0;
+    height: 80px; 
+    position: relative; 
   }
   .card__information {
-    flex-grow: 1;
+    position: static; 
+    height: 100%;
   }
   .card__heading {
-    margin: 0 0 5px;
+    margin: 0;
+    padding: 0;
     font-size: 1rem;
+    line-height: 1.2;
+    max-height: 2.4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .card__price {
+    font-size: 1rem;
+    line-height: 1.2;
+    {% comment %} position: absolute;  {% endcomment %}
+    bottom: 0;
+    left: 0;
+    width: 100%;
   }
   .collection-slider-placeholder {
     padding: 40px 0;
