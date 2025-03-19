@@ -1362,17 +1362,17 @@ html {
   margin: 0 auto;
 }
 
-.main-content {
-  display: block;
-  padding-top: $section-spacing-small;
+// .main-content {
+//   display: block;
+//   padding-top: 0;
 
-  @include media-query($medium-up) {
-    padding-top: $section-spacing;
-  }
-}
+//   @include media-query($medium-up) {
+//     padding-top: 0;
+//   }
+// }
 
 .section-header {
-  margin-bottom: $section-spacing-small;
+  // margin-bottom: $section-spacing-small;
 
   @include media-query($medium-up) {
     margin-bottom: $section-spacing;
@@ -3988,9 +3988,9 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 @include media-query($small) {
-  .template-product .main-content {
-    padding-top: $grid-gutter-mobile;
-  }
+  // .template-product .main-content {
+  //   padding-top: $grid-gutter-mobile;
+  // }
   .product-single__media-group {
     position: relative;
   }
