@@ -1,0 +1,35 @@
+<div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %}">
+  <a class="grid-view-item__link" href="{{ product.url | within: collection }}">
+    <div class="grid-view-item__image-wrapper">
+      <button class="wishlist-btn" 
+              aria-label="Adicionar à lista de desejos" 
+              data-product-handle="{{ product.handle }}" 
+              data-product-id="{{ product.id }}">
+        {% include 'icon-heart' with width: 20, height: 20 %}
+      </button>
+      
+      {% if product.featured_media %}
+        <img class="grid-view-item__image" src="{{ product.featured_media | img_url: '500x' }}" alt="{{ product.featured_media.alt }}">
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag: 'grid-view-item__image' }}
+      {% endif %}
+    </div>
+    <div class="grid-view-item__meta">
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+      <span class="grid-view-item__title">{{ product.title }}</span>
+      
+      {% if product.compare_at_price > product.price %}
+        <span class="grid-view-item__price grid-view-item__price--sale">
+          {{ product.price | money }}
+        </span>
+        <span class="grid-view-item__price grid-view-item__price--compare">
+          {{ product.compare_at_price | money }}
+        </span>
+      {% else %}
+        <span class="grid-view-item__price">
+          {{ product.price | money }}
+        </span>
+      {% endif %}
+    </div>
+  </a>
+</div> 

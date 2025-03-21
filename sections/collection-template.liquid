@@ -231,6 +231,26 @@
 
 {% endpaginate %}
 
+<style>
+  .grid__item {
+    width: 50%; /* Ajuste para mostrar dois itens por linha */
+  }
+  @media screen and (min-width: 750px) {
+    .grid__item {
+      width: 33.33%;
+    }
+  }
+  @media screen and (min-width: 990px) {
+    .grid__item {
+      width: 25%;
+    }
+  }
+  @media screen and (min-width: 1200px) {
+    .grid__item {
+      width: 20%;
+    }
+  }
+</style>
 
 
 {% schema %}

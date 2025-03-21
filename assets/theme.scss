@@ -2963,6 +2963,8 @@ hr {
 
 .grid-view-item__image-wrapper {
   margin: 0 auto $grid-gutter / 2;
+  height: 170px;
+  background: #f1f1f1;
   position: relative;
   width: 100%;
 }
@@ -2972,6 +2974,8 @@ hr {
   margin: 0 auto;
   width: 100%;
   .grid-view-item__image-wrapper & {
+    height: 170px;
+    background: #f1f1f1;
     position: absolute;
     top: 0;
   }
@@ -3749,21 +3753,12 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .product-form__cart-submit {
-  display: block;
-  width: 100%;
-  line-height: 1.4;
-  padding-left: 5px;
-  padding-right: 5px;
-  white-space: normal;
-  margin-top: 0;
-  margin-bottom: 10px;
-  min-height: 44px;
-
-  .product-single--small-media &,
-  .product-single--full-media & {
-    @include flex(50%);
-    margin-right: 10px;
-  }
+  flex: 1;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  margin-right: 0 !important;
+  background-color: #e94545; /* Cor de fundo adicionada */
+  color: #fff; /* Cor do texto */
 }
 
 .shopify-payment-button {

@@ -1,0 +1,131 @@
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+
+      <div class="wishlist-container">
+        <!-- Os itens da lista de desejos serão carregados aqui pelo JavaScript -->
+        <div class="wishlist-loading">
+          <p>Carregando sua lista de desejos...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .wishlist-empty {
+    text-align: center;
+    padding: 50px 0;
+  }
+  
+  .wishlist-empty h2 {
+    margin-bottom: 20px;
+  }
+  
+  .wishlist-empty p {
+    margin-bottom: 30px;
+  }
+  
+  .wishlist-loading {
+    text-align: center;
+    padding: 50px 0;
+  }
+  
+  .wishlist-product {
+    position: relative;
+    margin-bottom: 30px;
+    border: 1px solid #e8e9eb;
+    border-radius: 3px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .wishlist-product__remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #e8e9eb;
+    font-size: 20px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.2s ease;
+  }
+  
+  .wishlist-product__remove:hover {
+    background: #f8f8f8;
+    transform: scale(1.1);
+  }
+  
+  .wishlist-product__link {
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    color: inherit;
+    flex-grow: 1;
+  }
+  
+  .wishlist-product__image-wrapper {
+    margin-bottom: 15px;
+    padding-bottom: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .wishlist-product__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+  }
+  
+  .wishlist-product__link:hover .wishlist-product__image {
+    transform: scale(1.05);
+  }
+  
+  .wishlist-product__info {
+    text-align: center;
+  }
+  
+  .wishlist-product__title {
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .wishlist-product__price {
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  .wishlist-product__price--sale {
+    color: #e94057;
+  }
+  
+  .wishlist-product__price--compare {
+    text-decoration: line-through;
+    color: #69727b;
+    font-weight: normal;
+    font-size: 0.9em;
+    margin-left: 5px;
+  }
+  
+  .wishlist-product__add {
+    margin: 0 15px 15px;
+  }
+</style> 

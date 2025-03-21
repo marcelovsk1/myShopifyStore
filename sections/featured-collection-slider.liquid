@@ -36,6 +36,14 @@
                           {{ 'product-1' | placeholder_svg_tag: 'card__image' }}
                         {% endif %}
                         <a href="{{ product.url | within: collection }}" class="card__view-button">View</a>
+                        
+                        <!-- Botão de adicionar à wishlist -->
+                        <button class="wishlist-btn" 
+                                aria-label="Adicionar à lista de desejos" 
+                                data-product-handle="{{ product.handle }}" 
+                                data-product-id="{{ product.id }}">
+                          {% include 'icon-heart' with width: 20, height: 20 %}
+                        </button>
                       </div>
                     </a>
                     <div class="card__content">
@@ -105,24 +113,24 @@
     scroll-behavior: auto;
   }
   .featured-collection-slider__slide {
-    flex: 0 0 85%;
+    flex: 0 0 50%;
     padding: 0 10px;
     box-sizing: border-box;
     scroll-snap-align: start;
   }
   @media screen and (min-width: 750px) {
     .featured-collection-slider__slide {
-      flex: 0 0 45%;
+      flex: 0 0 50%;
     }
   }
   @media screen and (min-width: 990px) {
     .featured-collection-slider__slide {
-      flex: 0 0 30%;
+      flex: 0 0 33.33%;
     }
   }
   @media screen and (min-width: 1200px) {
     .featured-collection-slider__slide {
-      flex: 0 0 23%;
+      flex: 0 0 25%;
     }
   }
   .card-wrapper {
