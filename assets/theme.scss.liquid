@@ -7958,7 +7958,8 @@ $toolbar-height-small: 46px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center top;
-
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .collection-grid-item__title-wrapper::before {
@@ -7968,6 +7969,8 @@ $toolbar-height-small: 46px;
   right: 0;
   bottom: 0;
   left: 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   background-color: $color-image-overlay;
   opacity: $opacity-image-overlay;
 }
@@ -8269,6 +8272,9 @@ $transition-controls-video: color 0.2s $ease-transition, background-color 0.2s $
 
 .video__title {
   color: $color-overlay-title-text;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .video-is-paused & {
     display: none;

@@ -20,6 +20,15 @@
   {% endstyle %}
 {%- endif -%}
 <div class="page-width" data-section-id="{{ section.id }}" data-section-type="video-section">
+  {% if section.settings.header_title != blank %}
+    <div class="section-header text-center">
+      <h2 class="h1">{{ section.settings.header_title | escape }}</h2>
+      {% if section.settings.header_subtitle != blank %}
+        <div class="rte">{{ section.settings.header_subtitle }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+  
   {%- if section.settings.video_link != blank -%}
     <div class="video-section-wrapper
                 video-section-wrapper--{{ section.settings.height }}
@@ -254,6 +263,18 @@
   },
   "class": "index-section video-section",
   "settings": [
+    {
+      "type": "text",
+      "id": "header_title",
+      "label": "Título do cabeçalho",
+      "default": "Título da seção de vídeo"
+    },
+    {
+      "type": "richtext",
+      "id": "header_subtitle",
+      "label": "Subtítulo do cabeçalho",
+      "default": "<p>Adicione um texto descritivo para esta seção de vídeo</p>"
+    },
     {
       "type": "image_picker",
       "id": "image",
