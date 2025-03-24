@@ -38,12 +38,12 @@
                         <a href="{{ product.url | within: collection }}" class="card__view-button">View</a>
                         
                         <!-- Botão de adicionar à wishlist -->
-                        <button class="wishlist-btn" 
+                        {% comment %} <button class="wishlist-btn" 
                                 aria-label="Adicionar à lista de desejos" 
                                 data-product-handle="{{ product.handle }}" 
                                 data-product-id="{{ product.id }}">
                           {% include 'icon-heart' with width: 20, height: 20 %}
-                        </button>
+                        </button> {% endcomment %}
                       </div>
                     </a>
                     <div class="card__content">

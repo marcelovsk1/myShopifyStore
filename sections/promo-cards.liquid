@@ -1,0 +1,287 @@
+{% comment %}
+  Section para adicionar cards promocionais
+  - Permite criar vários cards com ofertas
+  - Cada card pode ter texto, cor de fundo e link personalizado
+{% endcomment %}
+
+<div class="promo-cards page-width">
+  {% if section.settings.title != blank %}
+    <div class="section-header text-center">
+      <h2>{{ section.settings.title | escape }}</h2>
+    </div>
+  {% endif %}
+
+  <div class="promo-cards__container">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'promo_card' %}
+          <a href="{{ block.settings.link }}" class="promo-card" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; text-align: {{ block.settings.text_alignment }};">
+            <div class="promo-card__percent-icon">
+              <svg aria-hidden="true" focusable="false" role="presentation" class="icon" viewBox="0 0 24 24" width="18" height="18">
+                <circle cx="12" cy="12" r="10" fill="currentColor"/>
+                <path d="M9,7 L15,17 M9,17 L15,7" stroke="white" stroke-width="2" fill="none"/>
+              </svg>
+            </div>
+            {% if block.settings.icon != blank %}
+              <div class="promo-card__icon">
+                <svg aria-hidden="true" focusable="false" role="presentation" class="icon" viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10" fill="currentColor"/>
+                </svg>
+              </div>
+            {% endif %}
+            {% if block.settings.title != blank %}
+              <h3 class="promo-card__title" style="font-size: {{ block.settings.title_font_size }}px;">{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.text != blank %}
+              <div class="promo-card__text" style="font-size: {{ block.settings.text_font_size }}px; color: white;">{{ block.settings.text }}</div>
+            {% endif %}
+          </a>
+      {% endcase %}
+    {% endfor %}
+  </div>
+
+  {% if section.blocks.size == 0 %}
+    <div class="placeholder-noblocks">
+      {{ 'homepage.onboarding.no_content' | t }}
+    </div>
+  {% endif %}
+</div>
+
+{% style %}
+  .promo-cards {
+    /* margin-top: 30px; */
+    margin-bottom: 30px;
+  }
+
+  .promo-cards__container {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .promo-card {
+    flex: 0 0 calc(50% - 8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    background-color: #e8f4ea;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .promo-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .promo-card[style*="text-align: left"] {
+    align-items: flex-start;
+  }
+  
+  .promo-card[style*="text-align: right"] {
+    align-items: flex-end;
+  }
+  
+  .promo-card[style*="text-align: center"] {
+    align-items: center;
+  }
+
+  .promo-card__percent-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 1;
+  }
+
+  .promo-card__icon {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promo-card__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .promo-card__title {
+    margin: 0 0 5px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 100%;
+  }
+
+  .promo-card__text {
+    font-size: 16px;
+    font-weight: 700;
+    width: 100%;
+    color: white !important;
+  }
+
+  @media screen and (max-width: 600px) {
+    .promo-cards__container {
+      flex-direction: row;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Cards Promocionais",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Promoções Especiais"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "promo_card",
+      "name": "Card Promocional",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "header",
+          "content": "Conteúdo"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Compre"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Compre 2<br>Ganhe 25% OFF</p>"
+        },
+        {
+          "type": "header",
+          "content": "Estilo"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Cor de fundo",
+          "default": "#e8f4ea"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Cor do texto",
+          "default": "#000000"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Alinhamento do texto",
+          "options": [
+            {
+              "value": "left",
+              "label": "Esquerda"
+            },
+            {
+              "value": "center",
+              "label": "Centro"
+            },
+            {
+              "value": "right",
+              "label": "Direita"
+            }
+          ],
+          "default": "center",
+          "info": "Controla o alinhamento do texto dentro do card"
+        },
+        {
+          "type": "range",
+          "id": "title_font_size",
+          "min": 14,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Tamanho da fonte do título",
+          "default": 18
+        },
+        {
+          "type": "range",
+          "id": "text_font_size",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Tamanho da fonte do texto",
+          "default": 16
+        },
+        {
+          "type": "header",
+          "content": "Ícone e Link"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Ícone (nome do snippet)",
+          "info": "Digite o nome do snippet para o ícone, ex: 'icon-tag'"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link",
+          "default": "/collections/all"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cards Promocionais",
+      "category": "Promocional",
+      "blocks": [
+        {
+          "type": "promo_card",
+          "settings": {
+            "title": "Compre 2",
+            "text": "<p>Ganhe 25% OFF</p>",
+            "background_color": "#e8f4ea",
+            "text_color": "#000000",
+            "text_alignment": "center",
+            "title_font_size": 18,
+            "text_font_size": 16,
+            "link": "/collections/all"
+          }
+        },
+        {
+          "type": "promo_card",
+          "settings": {
+            "title": "Compre 3",
+            "text": "<p>Ganhe 40% OFF</p>",
+            "background_color": "#e8f4ea",
+            "text_color": "#000000",
+            "text_alignment": "center",
+            "title_font_size": 18,
+            "text_font_size": 16,
+            "link": "/collections/all"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %} 
