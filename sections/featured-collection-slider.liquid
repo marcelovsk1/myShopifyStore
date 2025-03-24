@@ -24,6 +24,9 @@
                   <div class="card__inner">
                     <a href="{{ product.url | within: collection }}" class="card__media-link">
                       <div class="card__media">
+                        {% if product.compare_at_price > product.price %}
+                          <div class="card__sale-badge">SALE</div>
+                        {% endif %}
                         {% if product.featured_media %}
                           <img 
                             src="{{ product.featured_media | img_url: '345x' }}" 
@@ -35,7 +38,7 @@
                         {% else %}
                           {{ 'product-1' | placeholder_svg_tag: 'card__image' }}
                         {% endif %}
-                        <a href="{{ product.url | within: collection }}" class="card__view-button">View</a>
+                      
                         
                         <!-- Botão de adicionar à wishlist -->
                         {% comment %} <button class="wishlist-btn" 
@@ -58,15 +61,16 @@
                         </div>
                         <div class="card__price">
                           {% if product.price_varies %}
-                            <span>A partir de {{ product.price_min | money_without_trailing_zeros }}</span>
+                            <span>{{ product.price_min | money_without_trailing_zeros }}</span>
                           {% else %}
-                            <span>{{ product.price | money_without_trailing_zeros }}</span>
+                            <span id="realPrice">{{ product.price | money_without_trailing_zeros }}</span>
                           {% endif %}
                           
                           {% if product.compare_at_price > product.price %}
                             <span class="visually-hidden">Preço regular</span>
                             <s>{{ product.compare_at_price | money_without_trailing_zeros }}</s>
                           {% endif %}
+                          <a href="{{ product.url | within: collection }}" class="card__view-button">View</a>
                         </div>
                       </div>
                     </div>
@@ -96,6 +100,9 @@
     position: relative;
     overflow: hidden;
     margin: 0 -20px;
+  }
+  #realPrice {
+    font-weight: bold;
   }
   .featured-collection-slider__wrapper {
     display: flex;
@@ -185,7 +192,7 @@
     padding: 5px 12px;
     border-radius: 3px;
     font-size: 12px;
-    text-transform: uppercase;
+    {% comment %} text-transform: uppercase; {% endcomment %}
     z-index: 2;
     text-decoration: none;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
@@ -292,6 +299,19 @@
     100% {
       transform: translateX(100%);
     }
+  }
+  .card__sale-badge {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    background: linear-gradient(90deg, #8A2BE2 0%,rgb(65, 225, 206) 100%);
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 </style>
 
