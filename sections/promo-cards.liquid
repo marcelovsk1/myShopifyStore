@@ -4,7 +4,7 @@
   - Cada card pode ter texto, cor de fundo e link personalizado
 {% endcomment %}
 
-<div class="promo-cards page-width">
+<div class="promo-cards">
   {% if section.settings.title != blank %}
     <div class="section-header text-center">
       <h2>{{ section.settings.title | escape }}</h2>
@@ -16,10 +16,11 @@
       {% case block.type %}
         {% when 'promo_card' %}
           <a href="{{ block.settings.link }}" class="promo-card" {{ block.shopify_attributes }} style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; text-align: {{ block.settings.text_alignment }};">
-            <div class="promo-card__percent-icon">
-              <svg aria-hidden="true" focusable="false" role="presentation" class="icon" viewBox="0 0 24 24" width="18" height="18">
-                <circle cx="12" cy="12" r="10" fill="currentColor"/>
-                <path d="M9,7 L15,17 M9,17 L15,7" stroke="white" stroke-width="2" fill="none"/>
+            <div class="promo-card__tag-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="7" cy="7" r="2" stroke="currentColor" stroke-width="2"/>
+                <text x="7" y="8.5" text-anchor="middle" font-size="3.5" fill="currentColor" font-weight="bold" style="font-family: Arial;">$</text>
               </svg>
             </div>
             {% if block.settings.icon != blank %}
@@ -29,12 +30,14 @@
                 </svg>
               </div>
             {% endif %}
-            {% if block.settings.title != blank %}
-              <h3 class="promo-card__title" style="font-size: {{ block.settings.title_font_size }}px;">{{ block.settings.title }}</h3>
-            {% endif %}
-            {% if block.settings.text != blank %}
-              <div class="promo-card__text" style="font-size: {{ block.settings.text_font_size }}px; color: white;">{{ block.settings.text }}</div>
-            {% endif %}
+            <div class="promo-card__content">
+              {% if block.settings.title != blank %}
+                <h3 class="promo-card__title" style="font-size: {{ block.settings.title_font_size }}px;">{{ block.settings.title }}</h3>
+              {% endif %}
+              {% if block.settings.text != blank %}
+                <div class="promo-card__text" style="font-size: {{ block.settings.text_font_size }}px; color: white;">{{ block.settings.text }}</div>
+              {% endif %}
+            </div>
           </a>
       {% endcase %}
     {% endfor %}
@@ -49,7 +52,7 @@
 
 {% style %}
   .promo-cards {
-    /* margin-top: 30px; */
+    margin-top: -20px;
     margin-bottom: 30px;
   }
 
@@ -82,29 +85,63 @@
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   }
   
-  .promo-card[style*="text-align: left"] {
+  .promo-card__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 15px;
+    width: 100%;
+  }
+
+  .promo-card__title {
+    margin: 0 0 -2px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 100%;
+  }
+
+  .promo-card__text {
+    font-size: 16px;
+    font-weight: 700;
+    width: 100%;
+    margin: 0;
+    background: linear-gradient(90deg, #8A2BE2 0%,rgb(65, 225, 206) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .promo-card[style*="text-align: left"] .promo-card__content {
     align-items: flex-start;
+    position: relative;
   }
   
-  .promo-card[style*="text-align: right"] {
+  .promo-card[style*="text-align: right"] .promo-card__content {
     align-items: flex-end;
   }
   
-  .promo-card[style*="text-align: center"] {
+  .promo-card[style*="text-align: center"] .promo-card__content {
     align-items: center;
   }
 
-  .promo-card__percent-icon {
+  .promo-card__tag-icon {
     position: absolute;
     top: 10px;
-    left: 10px;
+    right: 10px;
     width: 24px;
     height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    z-index: 1;
+    color: #8a2be2;
+  }
+
+  .promo-card__tag-icon svg {
+    width: 100%;
+    height: 100%;
   }
 
   .promo-card__icon {
@@ -119,23 +156,12 @@
     height: 24px;
   }
 
-  .promo-card__title {
-    margin: 0 0 5px;
-    font-size: 18px;
-    font-weight: 700;
-    width: 100%;
-  }
-
-  .promo-card__text {
-    font-size: 16px;
-    font-weight: 700;
-    width: 100%;
-    color: white !important;
-  }
-
   @media screen and (max-width: 600px) {
     .promo-cards__container {
       flex-direction: row;
+      height: 90px;
+      padding-left: 10px !important;
+      padding-right: 10px !important;
     }
   }
 {% endstyle %}
@@ -213,7 +239,7 @@
         {
           "type": "range",
           "id": "title_font_size",
-          "min": 14,
+          "min": 10,
           "max": 36,
           "step": 1,
           "unit": "px",
