@@ -1609,12 +1609,29 @@ li {
 .mega-title,
 .mega-subtitle {
   color: $color-overlay-title-text;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: inline-block;
+  padding: 4px 100px;
+  border-radius: 40px;
+  font-weight: 500;
+  position: relative;
+  top: 200px;
+  
   .hero & {
     text-shadow: 0 0 4px $color-text-shadow;
   }
+  
   @include media-query($medium-up) {
     text-shadow: 0 0 4px $color-text-shadow;
+    padding: 10px 20px;
   }
+}
+
+#hero-subtitle-wrapper {
+  position: relative;
+  top: 10px;
 }
 
 .mega-title {
@@ -7931,15 +7948,20 @@ $toolbar-height-small: 46px;
   position: absolute;
   text-align: center;
   width: 100%;
-  top: 50%;
-  padding: 0 5px;
+  top: 90%;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  padding: 5px 10px;
   @include transform(translateY(-50%));
   transition: $transition-link-hover;
   text-shadow: 0 0 4px $color-text-shadow;
   hyphens: auto;
+  border-radius: 4px;
+  font-weight: 500;
 
   @include media-query($medium-up) {
-    padding: 0 15px;
+    padding: 8px 15px;
   }
 }
 

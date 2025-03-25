@@ -242,11 +242,22 @@
       searchForm: !!searchForm
     });
 
-    function closeSearchBar() {
+    function closeSearchBar(e) {
+      if (e) {
+        e.preventDefault();
+      }
       console.log('Fechando a search bar');
       searchBar.classList.remove('is-open');
       searchBarOverlay.classList.remove('is-visible');
       document.body.classList.remove('search-bar-open');
+      // Limpar o input e os resultados ao fechar
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      const suggestions = document.querySelector('.search-bar__suggestions');
+      if (suggestions) {
+        suggestions.innerHTML = '';
+      }
     }
 
     function openSearchBar() {
@@ -368,7 +379,13 @@
 
     // Fechar a search bar
     if (closeButton) {
-      closeButton.addEventListener('click', closeSearchBar);
+      console.log('Adicionando evento de clique ao botão Cancel');
+      closeButton.onclick = function(e) {
+        console.log('Botão Cancel clicado');
+        closeSearchBar(e);
+      };
+    } else {
+      console.log('Botão Cancel não encontrado');
     }
 
     // Overlay fecha a search bar
