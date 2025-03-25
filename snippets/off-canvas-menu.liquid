@@ -1,0 +1,113 @@
+{% comment %}
+  Off Canvas Menu para dispositivos móveis
+  Inspirado no layout da imagem de referência
+{% endcomment %}
+
+<div id="OffCanvasMenu" class="off-canvas-menu">
+  <div class="off-canvas-menu__overlay js-off-canvas-close"></div>
+  <div class="off-canvas-menu__drawer">
+    <div class="off-canvas-menu__header">
+      <h2 class="off-canvas-menu__title">Menu</h2>
+      <button class="off-canvas-menu__close js-off-canvas-close" aria-label="Fechar menu">
+        <svg aria-hidden="true" focusable="false" role="presentation" width="16" height="16" viewBox="0 0 16 16">
+          <path d="M15 1.6L13.4 0 8 5.4 2.6 0 1 1.6 6.4 7 1 12.4 2.6 14 8 8.6 13.4 14 15 12.4 9.6 7z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="off-canvas-menu__content">
+      <div class="off-canvas-menu__collection-group">
+        <h3 class="off-canvas-menu__subtitle">Shop by collection</h3>
+        <div class="off-canvas-menu__collection-grid">
+          <a href="/collections/necklaces" class="off-canvas-menu__collection-card">
+            <div class="off-canvas-menu__card-image-container">
+              <img src="https://cdn.shopify.com/s/files/1/0598/3358/1686/files/649840_v2.jpg?v=1733115407" class="off-canvas-menu__card-image" loading="lazy" width="300" height="300">
+            </div>
+            <span class="off-canvas-menu__card-title">Running</span>
+          </a>
+          
+          <a href="/collections/earrings" class="off-canvas-menu__collection-card">
+            <div class="off-canvas-menu__card-image-container">
+              <img src="https://cdn.shopify.com/s/files/1/0598/3358/1686/files/adidas-Gazelle-tenis-tendencia-fabiola-kassin-hypnotique-1-819x1024.jpg?v=1742480630"  class="off-canvas-menu__card-image" loading="lazy" width="300" height="300">
+            </div>
+            <span class="off-canvas-menu__card-title">Lifestyle</span>
+          </a>
+          
+          <a href="/collections/collection-1" class="off-canvas-menu__collection-card">
+            <div class="off-canvas-menu__card-image-container">
+              <img src="https://cdn.shopify.com/s/files/1/0598/3358/1686/files/GettyImages-1249538859-e1681825764583.webp?v=1742498033" class="off-canvas-menu__card-image" loading="lazy" width="300" height="300">
+            </div>
+            <span class="off-canvas-menu__card-title">Jerseys</span>
+          </a>
+          
+          <a href="/collections/all-jewelry" class="off-canvas-menu__collection-card off-canvas-menu__collection-card--text-only">
+            <div class="off-canvas-menu__text-container">
+              <span class="off-canvas-menu__card-title-large">All Products</span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="off-canvas-menu__collection-group">
+        <h3 class="off-canvas-menu__subtitle">Summer Sale</h3>
+        <div class="off-canvas-menu__collection-grid">
+          <a href="/collections/watches" class="off-canvas-menu__collection-card">
+            <div class="off-canvas-menu__card-image-container">
+              <img src="https://cdn.shopify.com/s/files/1/0598/3358/1686/files/Screenshot_2025-03-05_at_4.43.04_PM.png?v=1741211207" class="off-canvas-menu__card-image" loading="lazy" width="300" height="300">
+            </div>
+            <span class="off-canvas-menu__card-title">Buy 2 Get 20% OFF!</span>
+          </a>
+
+          <a href="/collections/watches" class="off-canvas-menu__collection-card off-canvas-menu__collection-card--large">
+            <div class="off-canvas-menu__card-image-container">
+              <img src="https://cdn.shopify.com/s/files/1/0598/3358/1686/files/source.gif?v=1742355083" class="off-canvas-menu__card-image" loading="lazy" width="300" height="300">
+            </div>
+            <span class="off-canvas-menu__card-title">Buy 3 Get 40% OFF!</span>
+          </a>
+        </div>
+      </div>
+      
+      {% comment %} <div class="off-canvas-menu__sections-container">
+        <div class="off-canvas-menu__section">
+          <h3 class="off-canvas-menu__subtitle">Informações</h3>
+          <ul class="off-canvas-menu__links">
+            <li class="off-canvas-menu__link-item">
+              <a href="/pages/sobre-nos" class="off-canvas-menu__link">Sobre nós</a>
+            </li>
+            <li class="off-canvas-menu__link-item">
+              <a href="/pages/contato" class="off-canvas-menu__link">Contato</a>
+            </li>
+            <li class="off-canvas-menu__link-item">
+              <a href="/policies/refund-policy" class="off-canvas-menu__link">Política de troca</a>
+            </li>
+            <li class="off-canvas-menu__link-item">
+              <a href="/policies/terms-of-service" class="off-canvas-menu__link">Termos de serviço</a>
+            </li>
+          </ul>
+        </div> {% endcomment %}
+        
+      <div class="off-canvas-menu__sections-container">
+        <div class="off-canvas-menu__section">
+          <h3 class="off-canvas-menu__subtitle">Account</h3>
+          <ul class="off-canvas-menu__links">
+            {% if customer %}
+              <li class="off-canvas-menu__link-item">
+                <a href="/account" class="off-canvas-menu__link">Minha conta</a>
+              </li>
+              <li class="off-canvas-menu__link-item">
+                <a href="/account/logout" class="off-canvas-menu__link">Sair</a>
+              </li>
+            {% else %}
+              <li class="off-canvas-menu__link-item">
+                <a href="/account/login" class="off-canvas-menu__link" id="login">Sign In</a>
+              </li>
+              {% comment %} <li class="off-canvas-menu__link-item">
+                <a href="/account/register" class="off-canvas-menu__link">Criar conta</a>
+              </li> {% endcomment %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

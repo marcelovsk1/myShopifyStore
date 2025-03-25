@@ -1899,7 +1899,7 @@ a[href^="tel"] {
   font-family: $font-stack-header;
   font-style: $font-style-header;
   font-weight: $font-weight-header;
-  text-transform: uppercase;
+  text-transform: capitalize;
   letter-spacing: 0.08em;
   white-space: normal;
   font-size: $font-size-base - 2;
@@ -2046,6 +2046,9 @@ a[href^="tel"] {
 
 .full-width-link {
   position: absolute;
+  border: 1px solid black !important;
+  border-radius: 5px;
+  padding: 10px;
   top: 0;
   right: 0;
   bottom: 0;

@@ -1,0 +1,401 @@
+<div class="search-bar" id="SearchBar">
+  <div class="search-bar__container">
+    <form action="{{ routes.search_url }}" method="get" role="search">
+      <div class="search-bar__input-wrapper">
+        {% comment %} <span class="search-bar__icon">🔍</span> {% endcomment %}
+        <input type="text" name="q" class="search-bar__input" placeholder="Search" role="combobox" aria-autocomplete="list" aria-owns="predictive-search-results" aria-expanded="false" aria-label="Search" aria-haspopup="listbox">
+      </div>
+    </form>
+    <button type="button" class="search-bar__close" aria-label="Cancel">
+      Cancel
+    </button>
+  </div>
+  <div class="search-bar__popular-terms">
+    <h3>Popular Search Terms</h3>
+    <div class="search-bar__tags">
+      <span class="search-bar__tag">formula 1</span>
+      <span class="search-bar__tag">lifestyle</span>
+      <span class="search-bar__tag">jerseys</span>
+      <span class="search-bar__tag">adios pro 4</span>
+      <span class="search-bar__tag">9060</span>
+      <span class="search-bar__tag">spfc</span>
+    </div>
+  </div>
+  <ul class="search-bar__suggestions" id="predictive-search-results"></ul>
+</div>
+
+<div class="search-bar-overlay" id="SearchBarOverlay"></div>
+
+<style>
+  .search-bar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 1001;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .search-bar.is-open {
+    right: 0;
+  }
+
+  .search-bar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .search-bar-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-bar__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .search-bar__input-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #f1f1f1;
+    width: 320px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+
+  .search-bar__icon {
+    margin-right: 10px;
+    color: #888;
+  }
+
+  .search-bar__input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    background: transparent;
+    outline: none;
+  }
+
+  .search-bar__close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+    padding: 10px;
+  }
+
+  .search-bar__popular-terms {
+    margin-top: 20px;
+  }
+
+  .search-bar__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .search-bar__tag {
+    background-color: #f0f0f0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+  }
+
+  .search-bar__suggestions {
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
+
+  .search-bar__suggestions li {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    height: 100%;
+    background-color: white;
+    box-shadow: none;
+    overflow: hidden;
+  }
+
+  .search-bar__suggestions li.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 30px;
+  }
+
+  .search-bar__suggestions li:hover {
+    transform: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .search-bar__suggestions .product-image {
+    width: 100%;
+    margin-bottom: 0;
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-bottom: none;
+  }
+
+  .search-bar__suggestions img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  .search-bar__suggestions .product-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  .search-bar__suggestions strong {
+    font-size: 14px;
+    color: #222;
+    margin-bottom: 5px;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .search-bar__suggestions span {
+    font-size: 14px;
+    color: #333;
+    font-weight: 400;
+  }
+
+  body.search-bar-open {
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .search-bar__suggestions {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .search-bar__suggestions {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchBar = document.getElementById('SearchBar');
+    const searchBarOverlay = document.getElementById('SearchBarOverlay');
+    const closeButton = document.querySelector('.search-bar__close');
+    const searchToggle = document.querySelector('.site-header__search-toggle');
+    const searchInput = document.querySelector('.search-bar__input');
+    const searchForm = document.querySelector('form[role="search"]');
+
+    // Verificar se os elementos foram encontrados
+    console.log('Elementos da busca:', {
+      searchBar: !!searchBar,
+      searchBarOverlay: !!searchBarOverlay,
+      closeButton: !!closeButton,
+      searchToggle: !!searchToggle,
+      searchInput: !!searchInput,
+      searchForm: !!searchForm
+    });
+
+    function closeSearchBar() {
+      console.log('Fechando a search bar');
+      searchBar.classList.remove('is-open');
+      searchBarOverlay.classList.remove('is-visible');
+      document.body.classList.remove('search-bar-open');
+    }
+
+    function openSearchBar() {
+      console.log('Abrindo a search bar');
+      searchBar.classList.add('is-open');
+      searchBarOverlay.classList.add('is-visible');
+      document.body.classList.add('search-bar-open');
+      searchInput.focus();
+    }
+
+    // Função simplificada para buscar produtos
+    function searchProducts(query) {
+      query = query.trim();
+      console.log('Buscando produtos com query:', query);
+      
+      if (!query || query.length < 3) {
+        console.log('Query muito curta, pelo menos 3 caracteres são necessários');
+        document.querySelector('.search-bar__suggestions').innerHTML = '';
+        return;
+      }
+
+      // Mostrar indicador de carregamento
+      document.querySelector('.search-bar__suggestions').innerHTML = '<li class="no-results" style="text-align:center;">Buscando produtos...</li>';
+      
+      // Fazer a busca
+      fetch(`/search/suggest.json?q=${encodeURIComponent(query)}&resources[type]=product`)
+        .then(response => {
+          console.log('Resposta recebida:', response.status);
+          return response.json();
+        })
+        .then(data => {
+          console.log('Dados da busca:', data);
+          
+          if (!data || !data.resources || !data.resources.results || !data.resources.results.products) {
+            console.error('Formato de resposta inválido:', data);
+            document.querySelector('.search-bar__suggestions').innerHTML = '<li class="no-results">Erro ao buscar produtos</li>';
+            return;
+          }
+          
+          const suggestions = data.resources.results.products;
+          const suggestionsList = document.querySelector('.search-bar__suggestions');
+          suggestionsList.innerHTML = '';
+          
+          {% comment %} if (!suggestions || suggestions.length === 0) {
+            suggestionsList.innerHTML = '<li class="no-results">Nenhum produto encontrado</li>';
+            return;
+          } {% endcomment %}
+          
+          // Exibir cabeçalho de resultados
+          const resultHeader = document.createElement('li');
+          resultHeader.classList.add('search-result-header');
+          resultHeader.style.gridColumn = "1 / -1";
+          resultHeader.innerHTML = `<h3>Resultados (${suggestions.length})</h3>`;
+          {% comment %} suggestionsList.appendChild(resultHeader); {% endcomment %}
+          
+          // Exibir produtos
+          suggestions.forEach(product => {
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `
+              <a href="${product.url}" style="display: flex; flex-direction: column; text-decoration: none; width: 100%;">
+                <div class="product-image">
+                  <img src="${product.image || '//cdn.shopify.com/s/files/1/0533/2089/files/placeholder-image.png'}" alt="${product.title}">
+                </div>
+                <div class="product-info">
+                  <strong>${product.title}</strong>
+                  <span>${product.price}</span>
+                </div>
+              </a>`;
+            suggestionsList.appendChild(listItem);
+          });
+        })
+        .catch(error => {
+          console.error('Erro ao buscar produtos:', error);
+          document.querySelector('.search-bar__suggestions').innerHTML = '<li class="no-results">Erro ao buscar produtos</li>';
+        });
+    }
+
+    // Testar a busca imediatamente após carregar com um termo conhecido
+    setTimeout(() => {
+      console.log('Testando busca automática após carregamento');
+      searchProducts('formula');
+    }, 2000);
+
+    // Evento de formulário
+    if (searchForm) {
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const query = searchInput.value;
+        console.log('Formulário enviado com query:', query);
+        searchProducts(query);
+        return false;
+      });
+    }
+
+    // Evento de tecla enter diretamente no input
+    if (searchInput) {
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.keyCode === 13) {
+          e.preventDefault();
+          console.log('Tecla Enter pressionada no input');
+          searchProducts(this.value);
+        }
+      });
+    }
+
+    // Evento de input para busca em tempo real
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const query = this.value.trim();
+        console.log('Input alterado para:', query);
+        
+        // Usar timeout para evitar muitas requisições enquanto o usuário digita
+        clearTimeout(window.searchTimeout);
+        window.searchTimeout = setTimeout(() => {
+          searchProducts(query);
+        }, 500);
+      });
+    }
+
+    // Fechar a search bar
+    if (closeButton) {
+      closeButton.addEventListener('click', closeSearchBar);
+    }
+
+    // Overlay fecha a search bar
+    if (searchBarOverlay) {
+      searchBarOverlay.addEventListener('click', closeSearchBar);
+    }
+
+    // Tecla ESC fecha a search bar
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && searchBar.classList.contains('is-open')) {
+        closeSearchBar();
+      }
+    });
+
+    // Abrir a search bar
+    if (searchToggle) {
+      searchToggle.addEventListener('click', openSearchBar);
+    }
+
+    // Adicionar evento para os termos populares
+    document.querySelectorAll('.search-bar__tag').forEach(tag => {
+      tag.addEventListener('click', function() {
+        const query = this.textContent.trim();
+        console.log('Tag clicada:', query);
+        searchInput.value = query;
+        searchProducts(query);
+      });
+    });
+  });
+</script> 

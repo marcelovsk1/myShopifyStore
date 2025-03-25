@@ -18,10 +18,20 @@ class Wishlist {
   }
   
   init() {
-    this.updateWishlistCount();
-    this.bindEvents();
-    this.markActiveWishlistItems();
-    this.setupWishlistDrawer();
+    // Certifique-se que a inicialização ocorre após o DOM estar completamente carregado
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        this.updateWishlistCount();
+        this.bindEvents();
+        this.markActiveWishlistItems();
+        this.setupWishlistDrawer();
+      });
+    } else {
+      this.updateWishlistCount();
+      this.bindEvents();
+      this.markActiveWishlistItems();
+      this.setupWishlistDrawer();
+    }
   }
   
   bindEvents() {
@@ -122,6 +132,9 @@ class Wishlist {
     if (wishlistCount) {
       wishlistCount.textContent = count;
       wishlistCount.style.display = count > 0 ? 'flex' : 'none';
+      console.log('Wishlist count atualizado:', count, wishlistCount);
+    } else {
+      console.log('Elemento do contador de wishlist não encontrado');
     }
     
     if (wishlistCountBubble) {
@@ -428,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     .wishlist-drawer__product-remove {
       position: absolute;
-      top: 5px;
+      top: -2px;
       right: 5px;
       z-index: 5;
       background: rgba(255,255,255,0.7);
@@ -474,6 +487,8 @@ document.addEventListener('DOMContentLoaded', () => {
       padding: 8px 12px;
       font-size: 13px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      border-radius: 5px;
+      text-transform: capitalize;
     }
     
     @media screen and (max-width: 480px) {

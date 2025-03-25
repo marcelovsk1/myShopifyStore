@@ -9,6 +9,7 @@
  */
 {
   "current": {
+    "type_header_font": "chivo_n7",
     "sections": {
       "header": {
         "type": "header",
@@ -17,7 +18,7 @@
           "logo": "shopify://shop_images/Screenshot_2025-03-05_at_3.29.06_PM.png",
           "logo_max_width": 50,
           "main_linklist": "main-menu",
-          "message": false,
+          "message": true,
           "home_page_only": true,
           "message_text": "Announce something here",
           "message_link": "",
@@ -254,10 +255,51 @@
           "collection": "collection-1",
           "products_to_show": 8
         }
+      },
+      "promo_cards_EBd7EM": {
+        "type": "promo-cards",
+        "blocks": {
+          "promo_card_CGxbJL": {
+            "type": "promo_card",
+            "settings": {
+              "title": "Buy 2",
+              "text": "<p>Get 25% OFF</p>",
+              "background_color": "#000000",
+              "text_color": "#ffffff",
+              "text_alignment": "left",
+              "title_font_size": 13,
+              "text_font_size": 16,
+              "icon": "",
+              "link": "/collections/all"
+            }
+          },
+          "promo_card_G4cVnV": {
+            "type": "promo_card",
+            "settings": {
+              "title": "Buy 3",
+              "text": "<p>Get 40% OFF</p>",
+              "background_color": "#000000",
+              "text_color": "#ffffff",
+              "text_alignment": "left",
+              "title_font_size": 13,
+              "text_font_size": 16,
+              "icon": "",
+              "link": "/collections/all"
+            }
+          }
+        },
+        "block_order": [
+          "promo_card_CGxbJL",
+          "promo_card_G4cVnV"
+        ],
+        "settings": {
+          "title": ""
+        }
       }
     },
     "content_for_index": [
       "hero-2",
+      "promo_cards_EBd7EM",
       "collection_list_QNjVwX",
       "featured_collection_slider_HVCWgE",
       "hero_giB9VF",

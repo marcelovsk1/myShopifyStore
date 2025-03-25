@@ -40,8 +40,8 @@
   {% include 'social-meta-tags' %}
 
   {{ 'theme.scss.css' | asset_url | stylesheet_tag }}
-  {{ 'theme.css' | asset_url | stylesheet_tag }}
   {{ 'wishlist.css' | asset_url | stylesheet_tag }}
+  {{ 'off-canvas-menu.css' | asset_url | stylesheet_tag }}
 
   <script>
     var theme = {
@@ -109,19 +109,9 @@
   <script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'off-canvas-menu.js' | asset_url }}" defer="defer"></script>
 
   {{ content_for_header }}
-
-  <!-- CSS and JS files -->
-  {{ 'theme.scss' | asset_url | stylesheet_tag }}
-
-  <!-- Wishlist functionality -->
-  {{ 'wishlist.css' | asset_url | stylesheet_tag }}
-  
-  <!-- Critical scripts -->
-  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer="defer"></script>
-  <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
-  <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
 
   {% if settings.predictive_search_enabled %}
   <script>
@@ -172,7 +162,5 @@
     <li id="a11y-refresh-page-message">{{ 'general.accessibility.refresh_page' | t }}</li>
     <li id="a11y-selection-message">{{ 'general.accessibility.selection_help' | t }}</li>
   </ul>
-  
-  <script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
 </body>
 </html>
