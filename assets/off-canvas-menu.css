@@ -107,7 +107,7 @@
 }
 
 .off-canvas-menu__content {
-  padding: 20px;
+  padding: 5px 20px;
   opacity: 0;
   transform: translateX(-10px);
   transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -297,7 +297,7 @@ div.off-canvas-menu__card-image {
 
 .off-canvas-menu.is-active .off-canvas-menu__section {
   opacity: 1;
-  border-top: 1px solid #c5c5c5;
+  /* border-top: 1px solid #c5c5c5; */
   transform: translateY(0);
 }
 

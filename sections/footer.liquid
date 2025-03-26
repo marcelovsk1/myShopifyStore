@@ -102,7 +102,7 @@
 
   .site-footer {
     color: {{ section.settings.color_footer_text }};
-    background-color: {{ section.settings.color_footer_bg }};
+    {% comment %} background-color: {{ section.settings.color_footer_bg }}; {% endcomment %}
   }
 
   .site-footer__rte a {
@@ -164,6 +164,9 @@
                         {{ 'general.newsletter_form.confirmation' | t }}
                       </p>
                     {%- endif -%}
+                    <p>
+                      Join our newsletter to claim it
+                    </p>
                     <input type="hidden" name="contact[tags]" value="newsletter">
                     <div class="input-group {% if form.errors %} input-group--error{% endif %}">
                       <input type="email"

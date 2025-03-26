@@ -2,9 +2,9 @@
 {% assign product_limit = section.settings.products_to_show %}
 
 <div class="page-width">
-  <div class="section-header text-center">
+  <div class="section-header text-{{ section.settings.text_alignment }}">
     {% if section.settings.title != blank %}
-      <h2>{{ section.settings.title | escape }}</h2>
+      <h2 class="sliderTitle">{{ section.settings.title | escape }}</h2>
     {% endif %}
     {% if section.settings.text != blank %}
       <div class="rte">{{ section.settings.text }}</div>
@@ -100,9 +100,15 @@
     position: relative;
     overflow: hidden;
     margin: 0 -20px;
+    padding-bottom: 1rem;
   }
   #realPrice {
     font-weight: bold;
+  }
+  .sliderTitle {
+    display: flex;
+    justify-content: center;
+    font-size: 1.2rem;
   }
   .featured-collection-slider__wrapper {
     display: flex;
@@ -391,6 +397,26 @@
       "default": "<p>Exiba seus produtos em destaque em um slider elegante</p>"
     },
     {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alinhamento do texto",
+      "options": [
+        {
+          "value": "left",
+          "label": "Esquerda"
+        },
+        {
+          "value": "center",
+          "label": "Centro"
+        },
+        {
+          "value": "right",
+          "label": "Direita"
+        }
+      ],
+      "default": "center"
+    },
+    {
       "type": "collection",
       "id": "collection",
       "label": "Coleção"
@@ -410,7 +436,8 @@
       "name": "Coleção Slider",
       "category": "Coleção",
       "settings": {
-        "products_to_show": 8
+        "products_to_show": 8,
+        "text_alignment": "center"
       }
     }
   ]
