@@ -107,12 +107,20 @@
     font-weight: 700;
     width: 100%;
     margin: 0;
+    /* background: linear-gradient(90deg, rgba(138, 43, 226, 0.6) 0%, rgba(65, 225, 206, 0.6) 100%); */
     background: linear-gradient(90deg, #8A2BE2 0%,rgb(65, 225, 206) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+    /* text-shadow: 0 0 5px rgba(0,0,0,0.3); */
+    /* filter: blur(0.5px); */
+    transition: filter 0.3s ease;
   }
+
+  /* .promo-card:hover .promo-card__text {
+    filter: blur(2);
+  } */
 
   .promo-card[style*="text-align: left"] .promo-card__content {
     align-items: flex-start;
@@ -136,7 +144,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #8a2be2;
+    /* color: #8a2be2; */
+    color: rgb(53, 170, 156);
   }
 
   .promo-card__tag-icon svg {

@@ -53,7 +53,7 @@
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
     </dt>
     <dd>
-      <span class="price-item price-item--regular">
+      <span class="price-item price-item--regular" id="regularPrice">
         {%- if product.price_varies -%}
           {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
         {%- else -%}
@@ -67,7 +67,7 @@
       <span class="visually-hidden visually-hidden--inline">{{ 'products.product.sale_price' | t }}</span>
     </dt>
     <dd>
-      <span class="price-item price-item--sale">
+      <span class="price-item price-item--sale" id="salePrice">
         {%- if product.price_varies -%}
           {{ 'products.product.from_lowest_price_html' | t: lowest_price: money_price }}
         {%- else -%}
@@ -80,7 +80,7 @@
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.regular_price' | t }}</span>
       </dt>
       <dd>
-        <s class="price-item price-item--regular">
+        <s class="price-item price-item--regular" id="comparePrice">
           {{ compare_at_price | money }}
         </s>
       </dd>
@@ -108,12 +108,23 @@
       <span>{{ variant.unit_price | money }}</span>{{- unit_price_separator -}}{{- unit_price_base_unit -}}
     </dd>
   </div>
-  <div class="price__badges price__badges--listing">
-    <span class="price__badge price__badge--sale" aria-hidden="true">
-      <span>{{ 'products.product.on_sale' | t }}</span>
-    </span>
-    <span class="price__badge price__badge--sold-out">
-      <span>{{ 'products.product.sold_out' | t }}</span>
-    </span>
-  </div>
 </dl>
+
+<style>
+
+  #regularPrice {
+    font-size: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  #salePrice {
+    color: black;
+    font-size: 0.75rem;
+  }
+
+  #comparePrice {
+    font-weight: 500;
+    font-size: 0.75rem;
+    color: gray;
+  }
+</style>

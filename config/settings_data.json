@@ -10,6 +10,7 @@
 {
   "current": {
     "type_header_font": "chivo_n7",
+    "type_base_font": "chivo_n4",
     "sections": {
       "header": {
         "type": "header",
@@ -57,10 +58,10 @@
       "hero-2": {
         "type": "hero",
         "settings": {
-          "image": "shopify://shop_images/78276a150aa4910e139868cb12e6c7a6.gif",
+          "image": "shopify://shop_images/lacoste.png",
           "alignment": "center",
           "hero_layout": "full_width",
-          "hero_size": "large",
+          "hero_size": "medium",
           "text_size": "large",
           "title": "",
           "text": "",
@@ -205,7 +206,8 @@
         "type": "featured-collection-slider",
         "settings": {
           "title": "Trending on Running",
-          "text": "",
+          "text": "<h6>From speed workouts to intervals to long runs, our running sneakers support you from start to finish.</h6>",
+          "text_alignment": "center",
           "collection": "shoes",
           "products_to_show": 8
         }
@@ -216,10 +218,10 @@
           "image": "shopify://shop_images/Screenshot_2025-03-20_at_15.54.49.png",
           "alignment": "center",
           "hero_layout": "full_width",
-          "hero_size": "x-large",
+          "hero_size": "large",
           "text_size": "large",
           "title": "",
-          "text": "<h1><strong>Lifestyle</strong></h1>",
+          "text": "<h4><strong>Lifestyle</strong></h4>",
           "button_label": "",
           "button_link": ""
         }
@@ -227,8 +229,9 @@
       "featured_collection_slider_aCEhcg": {
         "type": "featured-collection-slider",
         "settings": {
-          "title": "",
+          "title": "The originals",
           "text": "<p><strong>Where iconic sneakers meet breezy layers, your spring looks are mapped out.</strong></p>",
+          "text_alignment": "center",
           "collection": "hydrogen",
           "products_to_show": 8
         }
@@ -250,8 +253,9 @@
       "featured_collection_slider_PbkNh4": {
         "type": "featured-collection-slider",
         "settings": {
-          "title": "",
+          "title": "New season, new drop",
           "text": "<h5><strong>Just grab your jersey and go to the match</strong></h5>",
+          "text_alignment": "center",
           "collection": "collection-1",
           "products_to_show": 8
         }

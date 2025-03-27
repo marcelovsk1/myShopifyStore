@@ -242,17 +242,19 @@ class Wishlist {
         <div class="wishlist-drawer__product-content">
           <div class="wishlist-drawer__product-info">
             <h3 class="wishlist-drawer__product-title">${product.title}</h3>
-            <div class="wishlist-drawer__product-price ${saleClass}">
-              ${this.formatMoney(variant.price)} ${comparePrice}
+            <div class="wishlist-drawer__product-details">
+              <div class="wishlist-drawer__product-price ${saleClass}">
+                ${this.formatMoney(variant.price)} ${comparePrice}
+              </div>
+              <form action="/cart/add" method="post" class="wishlist-drawer__product-form">
+                <input type="hidden" name="id" value="${variant.id}">
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="btn btn--small wishlist-drawer__product-add" ${!variant.available ? 'disabled' : ''}>
+                  ${variant.available ? 'Add to Bag' : 'Sold Out'}
+                </button>
+              </form>
             </div>
           </div>
-          <form action="/cart/add" method="post" class="wishlist-drawer__product-form">
-            <input type="hidden" name="id" value="${variant.id}">
-            <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="btn btn--small wishlist-drawer__product-add" ${!variant.available ? 'disabled' : ''}>
-              ${variant.available ? 'Add to Bag' : 'Sold Out'}
-            </button>
-          </form>
         </div>
       </div>
     `;
@@ -370,11 +372,11 @@ document.addEventListener('DOMContentLoaded', () => {
       width: 450px;
       max-width: 100%;
       height: 100%;
-      background-color: #fff;
+      background-color: #f1f1f1;
       z-index: 1001;
       overflow-y: auto;
       transition: right 0.3s ease-in-out;
-      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
     }
     
     .wishlist-drawer.is-open {
@@ -385,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
-      padding: 15px;
+      padding: 30px;
     }
     
     .wishlist-drawer__product {
@@ -393,8 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
       flex-direction: column;
       margin-bottom: 0;
       position: relative;
-      border: 1px solid black;
-      border-radius: 5px;
+      // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
       overflow: hidden;
       height: 100%;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -410,6 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
       height: auto;
       margin-bottom: 0;
       overflow: hidden;
+      background: rgb(248, 248, 248);
       border-bottom: 1px solid #d6d6d6;
     }
     
@@ -426,6 +429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     .wishlist-drawer__product-content {
+      background: white;
       padding: 12px;
       text-align: center;
       display: flex;
@@ -441,10 +445,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     .wishlist-drawer__product-remove {
       position: absolute;
-      top: -2px;
       right: 5px;
       z-index: 5;
       background: rgba(255,255,255,0.7);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       border-radius: 50%;
       width: 26px;
       height: 26px;
@@ -473,22 +477,34 @@ document.addEventListener('DOMContentLoaded', () => {
       -webkit-box-orient: vertical;
     }
     
-    .wishlist-drawer__product-price {
-      margin-bottom: 10px;
+    .wishlist-drawer__product-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
     }
     
     .wishlist-drawer__product-form {
-      margin-top: auto;
+      margin: 0;
     }
     
     .wishlist-drawer__product-add {
-      width: 100%;
       margin: 0;
-      padding: 8px 12px;
-      font-size: 13px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      text-transform: capitalize;
+      padding: 5px 12px !important;
+      font-size: 12px !important;
+      height: auto !important;
+      background: black;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      border-radius: 3px;
+      font-weight: 600 !important;
+      min-height: unset !important;
+      line-height: 1.2 !important;
+      white-space: nowrap;
+    }
+    
+    .wishlist-drawer__product-price {
+      margin-bottom: 0 !important;
+      font-weight: 600;
     }
     
     @media screen and (max-width: 480px) {

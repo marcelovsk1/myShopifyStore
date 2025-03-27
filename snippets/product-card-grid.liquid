@@ -8,6 +8,7 @@
     Usage:
     {% include 'product-card-grid', max_height: max_height, product: product, show_vendor: section.settings.show_vendor %}
 {% endcomment %}
+
 <div class="grid-view-item{% unless product.available %} grid-view-item--sold-out{% endunless %} product-card">
   <a class="grid-view-item__link grid-view-item__image-container full-width-link" href="{{ product.url | within: collection }}">
     <span class="visually-hidden">{{ product.title }}</span>
@@ -24,6 +25,12 @@
 
   <div class="product-card__image-with-placeholder-wrapper" data-image-with-placeholder-wrapper>
     <div id="{{ wrapper_id }}" class="grid-view-item__image-wrapper product-card__image-wrapper js">
+      {% if product.compare_at_price > product.price %}
+        <span class="product-badge sale">SALE</span>
+      {% endif %}
+      {% unless product.available %}
+        <span class="product-badge sold-out">SOLD OUT</span>
+      {% endunless %}
       <div style="padding-top:{% unless preview_image == blank %}{{ 1 | divided_by: preview_image.aspect_ratio | times: 100 }}%{% else %}100%{% endunless %};">
         <img id="{{ img_id }}"
               class="grid-view-item__image lazyload"
@@ -37,27 +44,105 @@
     </div>
     <div class="placeholder-background placeholder-background--animation" data-image-placeholder></div>
     
- {% comment %} <button class="wishlist-btn" 
-            aria-label="Adicionar à lista de desejos" 
-            data-product-handle="{{ product.handle }}" 
-            data-product-id="{{ product.id }}">
-      {% include 'icon-heart' with width: 20, height: 20 %}
-    </button>  {% endcomment %}
+    <div class="product-card__info">
+      <div class="h4 grid-view-item__title product-card__title" aria-hidden="true">{{ product.title }}</div>
+      <h6 class="collectionProductCard" aria-hidden="true">{{ collection.title }}</h6>
+      {% include 'product-price-listing', product: product, show_vendor: show_vendor %}
+    </div>
   </div>
 
   <noscript>
     {% capture image_size %}{{ max_height }}x{{ max_height }}{% endcapture %}
     <img class="grid-view-item__image" src="{{ preview_image | img_url: image_size, scale: 2 }}" alt="{{ preview_image.alt }}" style="max-width: {{ max_height | times: preview_image.aspect_ratio }}px;">
   </noscript>
-
-  
-  <div class="h4 grid-view-item__title product-card__title" aria-hidden="true">{{ product.title }}</div>
-  {% include 'product-price-listing', product: product, show_vendor: show_vendor %}
-  
 </div>
 
 <style>
+
+  .collectionProductCard {
+    font-weight: 500;
+    margin: 0 0 4px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  .product-card__info {
+    border-top: 1px solid rgb(225, 225, 225);
+    padding: 2px 8px;
+    background: white;
+    border-radius: 0 0 10px 10px; 
+}
+
+  .product-card__title {
+    margin: 0 0 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .price {
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  .price-item {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .price--on-sale .price-item--regular {
+    font-size: 13px;
+    color: #999;
+    text-decoration: line-through;
+    font-weight: normal;
+  }
+
   .product-card__image-with-placeholder-wrapper {
     position: relative;
+    border-radius: 20px;
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    z-index: 2;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+  }
+
+  .product-badge.sale {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    background: linear-gradient(90deg, #8A2BE2 0%,rgb(65, 225, 206) 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .product-badge.sold-out {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    background: linear-gradient(90deg,rgb(79, 79, 80) 0%,rgb(57, 58, 58) 100%);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    color: white;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    z-index: 2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 </style>
