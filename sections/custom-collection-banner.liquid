@@ -1,10 +1,29 @@
 {% if section.settings.show_banner_image %}
   <div class="custom-collection-banner">
-    <div class="custom-collection-banner__image-wrapper">
-      <img src="{{ section.settings.banner_image | img_url: '2048x' }}" alt="{{ collection.title }}" class="custom-collection-banner__image" width="100%" height="auto">
+    <div class="custom-collection-banner__image-wrapper {{ section.settings.banner_height }}">
+      {% assign banner_image = section.settings.banner_image %}
+      
+      {% case collection.handle %}
+        {% when 'running' %}
+          {% if section.settings.running_image %}
+            {% assign banner_image = section.settings.running_image %}
+          {% endif %}
+        {% when 'lifestyle' %}
+          {% if section.settings.lifestyle_image %}
+            {% assign banner_image = section.settings.lifestyle_image %}
+          {% endif %}
+        {% when 'jerseys' %}
+          {% if section.settings.jerseys_image %}
+            {% assign banner_image = section.settings.jerseys_image %}
+          {% endif %}
+      {% endcase %}
+      
+      {% if banner_image %}
+        <img src="{{ banner_image | img_url: '2048x' }}" alt="{{ collection.title }}" class="custom-collection-banner__image" width="100%" height="auto">
+      {% endif %}
     </div>
     {% if section.settings.show_title %}
-      <div class="custom-collection-banner__title-wrapper">
+      <div class="custom-collection-banner__title-wrapper {{ section.settings.text_color }}">
         <h1 class="custom-collection-banner__title">{{ collection.title }}</h1>
       </div>
     {% endif %}
@@ -18,14 +37,31 @@
 }
 
 .custom-collection-banner__image-wrapper {
-  height: 300px;
   overflow: hidden;
   border-radius: 8px;
+  position: relative;
+}
+
+.custom-collection-banner__image-wrapper.small {
+  height: 200px;
+}
+
+.custom-collection-banner__image-wrapper.medium {
+  height: 300px;
+}
+
+.custom-collection-banner__image-wrapper.large {
+  height: 400px;
+}
+
+.custom-collection-banner__image-wrapper.extra-large {
+  height: 500px;
 }
 
 .custom-collection-banner__image {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
 }
 
@@ -35,16 +71,38 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
   width: 100%;
   padding: 0 20px;
+  z-index: 2;
+}
+
+.custom-collection-banner__title-wrapper.light {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.custom-collection-banner__title-wrapper.dark {
+  color: #000;
+  text-shadow: 0 2px 4px rgba(255,255,255,0.3);
 }
 
 .custom-collection-banner__title {
   margin: 0;
   font-size: 2.5em;
   font-weight: 700;
+}
+
+@media screen and (max-width: 749px) {
+  .custom-collection-banner__image-wrapper.small,
+  .custom-collection-banner__image-wrapper.medium,
+  .custom-collection-banner__image-wrapper.large,
+  .custom-collection-banner__image-wrapper.extra-large {
+    height: 250px;
+  }
+  
+  .custom-collection-banner__title {
+    font-size: 1.8em;
+  }
 }
 </style>
 
@@ -53,9 +111,8 @@
   "name": "Custom Collection Banner",
   "settings": [
     {
-      "type": "image_picker",
-      "id": "banner_image",
-      "label": "Banner Image"
+      "type": "header",
+      "content": "Banner Settings"
     },
     {
       "type": "checkbox",
@@ -64,10 +121,86 @@
       "default": true
     },
     {
+      "type": "select",
+      "id": "banner_height",
+      "label": "Banner Height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small (200px)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (300px)"
+        },
+        {
+          "value": "large",
+          "label": "Large (400px)"
+        },
+        {
+          "value": "extra-large",
+          "label": "Extra Large (500px)"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text Color",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light (para fundos escuros)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark (para fundos claros)"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "header",
+      "content": "Default Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Default Banner Image"
+    },
+    {
       "type": "checkbox",
       "id": "show_title",
       "label": "Show Collection Title",
       "default": true
+    },
+    {
+      "type": "header",
+      "content": "Running Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "running_image",
+      "label": "Running Collection Image"
+    },
+    {
+      "type": "header",
+      "content": "Lifestyle Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "lifestyle_image",
+      "label": "Lifestyle Collection Image"
+    },
+    {
+      "type": "header",
+      "content": "Jerseys Collection"
+    },
+    {
+      "type": "image_picker",
+      "id": "jerseys_image",
+      "label": "Jerseys Collection Image"
     }
   ],
   "presets": [

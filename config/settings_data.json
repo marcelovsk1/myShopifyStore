@@ -176,7 +176,7 @@
           "featured_collection_mCWtcr": {
             "type": "featured_collection",
             "settings": {
-              "collection": "shoes"
+              "collection": "running"
             }
           },
           "featured_collection_MP3HzN": {
@@ -206,9 +206,9 @@
         "type": "featured-collection-slider",
         "settings": {
           "title": "Trending on Running",
-          "text": "<h6>From speed workouts to intervals to long runs, our running sneakers support you from start to finish.</h6>",
+          "text": "<h4>From speed workouts to intervals to long runs, our running sneakers support you from start to finish.</h4>",
           "text_alignment": "center",
-          "collection": "shoes",
+          "collection": "running",
           "products_to_show": 8
         }
       },
@@ -230,7 +230,7 @@
         "type": "featured-collection-slider",
         "settings": {
           "title": "The originals",
-          "text": "<p><strong>Where iconic sneakers meet breezy layers, your spring looks are mapped out.</strong></p>",
+          "text": "<h4><strong>Where iconic sneakers meet breezy layers, your spring looks are mapped out.</strong></h4>",
           "text_alignment": "center",
           "collection": "hydrogen",
           "products_to_show": 8
@@ -253,10 +253,10 @@
       "featured_collection_slider_PbkNh4": {
         "type": "featured-collection-slider",
         "settings": {
-          "title": "New season, new drop",
-          "text": "<h5><strong>Just grab your jersey and go to the match</strong></h5>",
+          "title": "New season new drop",
+          "text": "<h4><strong>Just grab your jersey and go to the match</strong></h4>",
           "text_alignment": "center",
-          "collection": "collection-1",
+          "collection": "jerseys",
           "products_to_show": 8
         }
       },
@@ -298,6 +298,39 @@
         ],
         "settings": {
           "title": ""
+        }
+      },
+      "product-template": {
+        "type": "product-template",
+        "settings": {
+          "show_quantity_selector": false,
+          "show_variant_labels": true,
+          "show_vendor": false,
+          "enable_payment_button": true,
+          "show_share_buttons": true,
+          "media_size": "medium",
+          "enable_image_zoom": true,
+          "enable_video_looping": false
+        }
+      },
+      "product-recommendations": {
+        "type": "product-recommendations",
+        "settings": {
+          "show_product_recommendations": true,
+          "heading": "You may also like",
+          "show_vendor": false
+        }
+      },
+      "collection-template": {
+        "type": "collection-template",
+        "settings": {
+          "layout": "grid",
+          "grid": 4,
+          "rows": 2,
+          "show_collection_image": false,
+          "show_vendor": false,
+          "sort_enable": false,
+          "tags_enable": true
         }
       }
     },
