@@ -2968,7 +2968,7 @@ hr {
 
 .grid-view-item__image-wrapper {
   // margin: 0 auto $grid-gutter / 2;
-  height: 180px;
+  height: 160px;
   border-radius: 20px 20px 0 0;
   // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   background: #f8f8f8;
@@ -7008,7 +7008,8 @@ $toolbar-height-small: 46px;
 .filters-toolbar-wrapper {
   border-bottom: 1px solid $color-border;
   border-top: 1px solid $color-border;
-  margin-bottom: $gutter-site-mobile;
+  // margin-bottom: $gutter-site-mobile;
+  margin-bottom: 5px;
 
   @include media-query($medium-up) {
     margin-bottom: $section-spacing;
@@ -7044,7 +7045,7 @@ $toolbar-height-small: 46px;
 
     .filters-toolbar__item--count {
       @include flex-basis(100%);
-      text-align: left;
+      text-align: end !important;
 
       &:before {
         background-color: $color-border;
@@ -7089,9 +7090,10 @@ $toolbar-height-small: 46px;
 
   .filters-toolbar__input {
     @include media-query($small) {
+      font-size: 12px; 
       padding-left: 0;
       padding-right: 25px;
-      width: 100%;
+      width: auto !important;
     }
   }
 }

@@ -1,0 +1,79 @@
+{% if section.settings.show_banner_image %}
+  <div class="custom-collection-banner">
+    <div class="custom-collection-banner__image-wrapper">
+      <img src="{{ section.settings.banner_image | img_url: '2048x' }}" alt="{{ collection.title }}" class="custom-collection-banner__image" width="100%" height="auto">
+    </div>
+    {% if section.settings.show_title %}
+      <div class="custom-collection-banner__title-wrapper">
+        <h1 class="custom-collection-banner__title">{{ collection.title }}</h1>
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+.custom-collection-banner {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.custom-collection-banner__image-wrapper {
+  height: 300px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.custom-collection-banner__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.custom-collection-banner__title-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  width: 100%;
+  padding: 0 20px;
+}
+
+.custom-collection-banner__title {
+  margin: 0;
+  font-size: 2.5em;
+  font-weight: 700;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Collection Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_banner_image",
+      "label": "Show Banner Image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Collection Title",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collection Banner"
+    }
+  ]
+}
+{% endschema %} 

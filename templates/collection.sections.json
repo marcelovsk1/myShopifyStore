@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "banner": {
+      "type": "collection-banner",
+      "settings": {
+        "show_collection_title": true,
+        "banner_height": "medium",
+        "text_color": "light"
+      }
+    },
+    "product-grid": {
+      "type": "collection-template",
+      "settings": {
+        "layout": "grid",
+        "grid": 4,
+        "rows": 4,
+        "show_collection_image": false,
+        "show_vendor": false,
+        "sort_enable": true,
+        "tags_enable": true
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid"
+  ]
+} 

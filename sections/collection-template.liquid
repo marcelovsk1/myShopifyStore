@@ -37,13 +37,13 @@
         <div class="collection-hero__title-wrapper">
           <h1 class="collection-hero__title page-width">
               <span class="visually-hidden">{{ 'collections.general.collection_label' | t }}: </span>
-              {{ collection.title }}
+              {% comment %} {{ collection.title }} {% endcomment %}
           </h1>
         </div>
       </div>
       {% if is_filter_by_available == false and section.settings.sort_enable == false %}
         <div class="page-width">
-          <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
+          {% comment %} <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span> {% endcomment %}
         </div>
       {% endif %}
       {% if collection.description != blank %}
@@ -53,7 +53,7 @@
       {% endif %}
     {% else %}
       <div class="page-width">
-        <div class="section-header text-center">
+        <div class="section-header text-start">
           <h1>
               <span class="visually-hidden">{{ 'collections.general.collection_label' | t }}: </span>
               {{ collection.title }}
@@ -78,44 +78,53 @@
               {% if section.settings.tags_enable %}
                 {% unless collection.all_tags.size == 0 %}
                   <div class="filters-toolbar__item-child">
-                    <label class="filters-toolbar__label select-label" for="FilterTags">{{ 'collections.filters.title_tags' | t }}</label>
-                    <div class="filters-toolbar__input-wrapper select-group">
-                      <select class="filters-toolbar__input hidden" name="FilterTags" id="FilterTags" aria-describedby="a11y-refresh-page-message a11y-selection-message">
-                        <option value="{{ collection.url }}">{{ 'collections.filters.all_tags' | t }}</option>
-                        {% for tag in collection.all_tags %}
-                          {%- assign new_url = tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first -%}
-                          <option value="{{ new_url }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
-                        {% endfor %}
-                      </select>
-                      {% include 'icon-chevron-down' %}
+                    <div class="filter-group">
+                      <label class="filter-label" for="FilterTags">{{ 'collections.filters.title_tags' | t }}</label>
+                      <div class="filter-select-wrapper">
+                        <select class="filter-select" name="FilterTags" id="FilterTags" aria-describedby="a11y-refresh-page-message a11y-selection-message">
+                          <option value="{{ collection.url }}">{{ 'collections.filters.all_tags' | t }}</option>
+                          {% for tag in collection.all_tags %}
+                            {%- assign new_url = tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first -%}
+                            <option value="{{ new_url }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
+                          {% endfor %}
+                        </select>
+                        {% include 'icon-chevron-down' %}
+                      </div>
+                      <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
                     </div>
                   </div>
                 {% endunless %}
               {% endif %}
+              {% comment %} <div class="filters-toolbar__item filters-toolbar__item--count">
+                <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
+              </div>  {% endcomment %}
+              
 
               {% if section.settings.sort_enable %}
                 <div class="filters-toolbar__item-child">
-                  {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
-                  <label class="filters-toolbar__label select-label" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
-                  <div class="filters-toolbar__input-wrapper select-group">
-                    <select name="sort_by" id="SortBy"
-                      class="filters-toolbar__input hidden"
-                      aria-describedby="a11y-refresh-page-message a11y-selection-message"
-                      data-default-sortby="{{ collection.default_sort_by }}"
-                    >
-                      {%- for option in collection.sort_options -%}
-                        <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
-                      {%- endfor -%}
-                    </select>
-                    {% include 'icon-chevron-down' %}
+                  <div class="filter-group">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    <label class="filter-label" for="SortBy">{{ 'collections.sorting.title' | t }}</label>
+                    <div class="filter-select-wrapper">
+                      <select name="sort_by" id="SortBy"
+                        class="filter-select"
+                        aria-describedby="a11y-refresh-page-message a11y-selection-message"
+                        data-default-sortby="{{ collection.default_sort_by }}"
+                      >
+                        {%- for option in collection.sort_options -%}
+                          <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>{{ option.name }}</option>
+                        {%- endfor -%}
+                      </select>
+                      {% include 'icon-chevron-down' %}
+                    </div>
                   </div>
                 </div>
               {% endif %}
             </div>
 
-            <div class="filters-toolbar__item filters-toolbar__item--count">
+            {% comment %} <div class="filters-toolbar__item filters-toolbar__item--count">
               <span class="filters-toolbar__product-count">{{ 'collections.general.items_with_count' | t: count: collection.products_count }}</span>
-            </div>
+            </div> {% endcomment %}
           </div>
         </div>
       </div>
@@ -134,6 +143,62 @@
       {% when 5 %}
         {%- assign grid_item_width = 'small--one-half medium-up--one-fifth' -%}
       {% endcase %}
+
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'collection_banner' %}
+            <div class="collection-banner {{ block.settings.banner_height }}" {{ block.shopify_attributes }}>
+              {% if block.settings.banner_image %}
+                <img 
+                  class="collection-banner__image lazyload"
+                  src="{{ block.settings.banner_image | img_url: '300x300' }}"
+                  data-src="{{ block.settings.banner_image | img_url: '2048x' }}"
+                  alt="{{ collection.title | escape }}"
+                  loading="lazy"
+                  width="{{ block.settings.banner_image.width }}"
+                  height="{{ block.settings.banner_image.height }}">
+              {% endif %}
+              {% if block.settings.show_collection_title %}
+                <div class="collection-banner__title {{ block.settings.text_color }}">
+                  <h1>{{ collection.title }}</h1>
+                </div>
+              {% endif %}
+            </div>
+          {% when 'featured_collection' %}
+            <div class="custom-content-container" {{ block.shopify_attributes }}>
+              <h2>{{ block.settings.title }}</h2>
+              {%- assign featured_collection = collections[block.settings.collection] -%}
+              {% if featured_collection != blank %}
+                <div class="featured-collection-grid">
+                  {% for product in featured_collection.products limit: 4 %}
+                    <div class="featured-collection-item">
+                      {% include 'product-card-grid', product: product, show_vendor: section.settings.show_vendor %}
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% when 'text' %}
+            <div class="custom-content-container" {{ block.shopify_attributes }}>
+              <h2>{{ block.settings.title }}</h2>
+              <div class="rte">
+                {{ block.settings.text }}
+              </div>
+            </div>
+          {% when 'image' %}
+            <div class="custom-content-container text-{{ block.settings.alignment }}" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '1000x' }}" 
+                     alt="{{ block.settings.image.alt | escape }}"
+                     loading="lazy"
+                     width="{{ block.settings.image.width }}"
+                     height="{{ block.settings.image.height }}">
+              {% else %}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {% endif %}
+            </div>
+        {% endcase %}
+      {% endfor %}
 
       <ul class="grid grid--uniform{% if collection.products_count > 0 %} grid--view-items{% endif %}">
         {% for product in collection.products %}
@@ -250,12 +315,251 @@
       width: 20%;
     }
   }
+
+  .custom-content-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  .featured-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .text-left {
+    text-align: left;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .custom-content-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .collection-banner {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+    overflow: hidden;
+  }
+
+  .collection-banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .collection-banner.small {
+    height: 300px;
+  }
+
+  .collection-banner.medium {
+    height: 400px;
+  }
+
+  .collection-banner.large {
+    height: 500px;
+  }
+
+  .collection-banner__title {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
+    padding: 0 20px;
+    z-index: 2;
+  }
+
+  .collection-banner__title h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .collection-banner__title.light h1 {
+    color: #fff;
+  }
+
+  .collection-banner__title.dark h1 {
+    color: #000;
+  }
+
+  .collection-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .collection-banner.small,
+    .collection-banner.medium,
+    .collection-banner.large {
+      height: 250px;
+    }
+
+    .collection-banner__title h1 {
+      font-size: 1.8em;
+    }
+  }
+
+  .filters-toolbar-wrapper {
+    background: #ffffff;
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  .filters-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .filters-toolbar__item-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+  }
+
+  .filter-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  .filter-select-wrapper {
+    position: relative;
+    min-width: 200px;
+  }
+
+  .filter-select {
+    width: 100%;
+    padding: 12px 40px 12px 16px;
+    border: 2px solid #e8e8e8;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    transition: all 0.3s ease;
+  }
+
+  .filter-select:hover {
+    border-color: #000;
+  }
+
+  .filter-select:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .filter-select-wrapper .icon-chevron-down {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 20px;
+    height: 20px;
+    color: #666;
+  }
+
+  .filters-toolbar__product-count {
+    font-size: 13px;
+    color: #666;
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .filters-toolbar-wrapper {
+      padding: 15px 0;
+      margin-bottom: 20px;
+    }
+
+    .filters-toolbar {
+      gap: 15px;
+    }
+
+    .filters-toolbar__item-wrapper {
+      gap: 15px;
+    }
+
+    .filter-select-wrapper {
+      min-width: 160px;
+    }
+
+    .filter-select {
+      padding: 10px 35px 10px 12px;
+      font-size: 14px;
+    }
+  }
 </style>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Filtro de tags
+  const filterTags = document.getElementById('FilterTags');
+  if (filterTags) {
+    filterTags.addEventListener('change', function() {
+      window.location.href = this.value;
+    });
+  }
+
+  // Ordenação
+  const sortBy = document.getElementById('SortBy');
+  if (sortBy) {
+    sortBy.addEventListener('change', function() {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('sort_by', this.value);
+      window.location.href = currentUrl.toString();
+    });
+  }
+});
+</script>
 
 {% schema %}
 {
   "name": "Collection pages",
+  "class": "collection-template-section",
+  "tag": "div",
   "settings": [
     {
       "type": "select",
@@ -314,6 +618,72 @@
       "id": "tags_enable",
       "label": "Enable tag filtering",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_banner",
+      "name": "Collection Banner",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "banner_image",
+          "label": "Banner Image"
+        },
+        {
+          "type": "select",
+          "id": "banner_height",
+          "label": "Banner Height",
+          "options": [
+            {
+              "value": "small",
+              "label": "Small (300px)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (400px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (500px)"
+            }
+          ],
+          "default": "medium"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_collection_title",
+          "label": "Show collection title",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "text_color",
+          "label": "Text color",
+          "options": [
+            {
+              "value": "light",
+              "label": "Light"
+            },
+            {
+              "value": "dark",
+              "label": "Dark"
+            }
+          ],
+          "default": "light"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Page",
+      "blocks": [
+        {
+          "type": "collection_banner"
+        }
+      ]
     }
   ]
 }
