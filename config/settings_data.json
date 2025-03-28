@@ -332,6 +332,18 @@
           "sort_enable": false,
           "tags_enable": true
         }
+      },
+      "custom-collection-banner": {
+        "type": "custom-collection-banner",
+        "settings": {
+          "show_banner_image": true,
+          "banner_height": "small",
+          "text_color": "light",
+          "banner_image": "shopify://shop_images/harry-styles-nyc.webp",
+          "show_title": false,
+          "running_image": "shopify://shop_images/Untitled_design_ff20a2b3-8617-42db-96c0-e60fc13ee031.png",
+          "jerseys_image": "shopify://shop_images/genoa-fb-min.jpg"
+        }
       }
     },
     "content_for_index": [
