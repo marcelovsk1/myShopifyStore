@@ -4,7 +4,9 @@
   data-section-type="product"
   data-enable-history-state="true"
   data-ajax-enabled="{{ settings.enable_ajax }}"
+  
 >
+  
   {% comment %}
     Get first variant, or deep linked one
   {% endcomment %}
@@ -35,6 +37,8 @@
       {%- assign enable_image_zoom = false -%}
   {% endcase %}
 
+
+
   <div class="grid product-single{% if section.settings.enable_payment_button %} product-single--{{ section.settings.media_size }}-media{% endif %}">
     <div class="grid__item product-single__media-group {{ product_media_width }}{% if section.settings.media_size == 'full' %} product-single__media-group--full{% endif %}" data-product-single-media-group>
       {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
@@ -46,6 +50,7 @@
           </div>
         {% endfor %}
       </div>
+      
 
       {% comment %} <div class="product-media-controls">
         <button class="media-prev">&#10094;</button>
@@ -56,6 +61,7 @@
         {% capture product_image_size %}{{ height }}x{% endcapture %}
         <img src="{{ featured_media | img_url: product_image_size, scale: product_image_scale }}" alt="{{ featured_media.alt }}" id="FeaturedMedia-{{ section.id }}" class="product-featured-media" style="max-width: {{ height }}px;" width="{{ featured_media.width }}" height="{{ featured_media.height }}">
       </noscript>
+      
 
       {% assign first_3d_model = product.media | where: "media_type", "model" | first %}
 
@@ -119,7 +125,7 @@
             }
 
             .stepper-bar {
-              width: 25px;
+              width: 15px;
             }
           }
 
@@ -254,7 +260,6 @@
           {{ product.description }}
         </div> {% endcomment %}
 
-
         {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
           <div class="product__policies rte" data-product-policies>
             {%- if shop.taxes_included -%}
@@ -367,9 +372,9 @@
         {% endform %}
       </div>
 
-      <div class="product-single__description rte">
+      {% comment %} <div class="product-single__description rte">
         {{ product.description }}
-      </div>
+      </div> {% endcomment %}
 
       {%- comment -%}
         Live region for announcing updated price and availability to screen readers
