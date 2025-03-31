@@ -1,0 +1,117 @@
+{% comment %}
+  Section para "Shop the Look"
+{% endcomment %}
+
+<div class="shop-the-look-section">
+  <h2 class="shop-the-look-title">Shop the Look</h2>
+  <div class="shop-the-look-container">
+    {% if section.settings.product != blank %}
+      {% assign product = all_products[section.settings.product] %}
+      <div class="shop-the-look-item">
+        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="shop-the-look-image" width="300" height="300">
+        <div class="shop-the-look-info">
+          <h3 class="shop-the-look-product-title">{{ product.title }}</h3>
+          <h6 class="shop-the-look-product-collection">{{ product.collections.first.title }}</h6>
+          <p class="shop-the-look-product-price">{{ product.price | money_without_trailing_zeros }}</p>
+          <form action="/cart/add" method="post">
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <button type="submit" class="shop-the-look-add-to-cart-button">Add to Cart</button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <p>Select a product to display.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop the Look",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop the Look",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .shop-the-look-section {
+    padding: 20px 0;
+  }
+  .shop-the-look-title {
+    font-size: .9rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 0 15px;
+  }
+  .shop-the-look-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 0 10px;
+    /* border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9; */
+  }
+  .shop-the-look-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    width: 100%;
+  }
+  .shop-the-look-image {
+    width: 150px;
+    height: auto;
+    background: #f6f6f6;
+    border-radius: 8px;
+  }
+  .shop-the-look-info {
+    flex-grow: 1;
+    text-align: left;
+  }
+  .shop-the-look-product-title {
+    font-size: .9rem;
+    font-weight: bold;
+    margin: 0 0 1px;
+  }
+  .shop-the-look-product-collection {
+    font-size: .7rem;
+    font-weight: 400;
+  }
+  .shop-the-look-product-price {
+    font-size: .9rem;
+    color: #000;
+    margin-bottom: 10px;
+  }
+  .shop-the-look-add-to-cart-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    margin-top: 10px;
+    padding: 8px 69px;
+    font-weight: 600;
+    font-size: .7rem;
+    cursor: pointer;
+    border-radius: 5px;
+    align-self: flex-start;
+  }
+  .shop-the-look-add-to-cart-button:hover {
+    background-color: #333;
+  }
+{% endstyle %} 
