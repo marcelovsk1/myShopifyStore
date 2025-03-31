@@ -9,6 +9,10 @@
     </div>
   {% endif %}
 
+  <div class="dropHeader">
+    <h2 class="dropHeader__title">{{ section.settings.header_text }}</h2>
+  </div>
+
   <div class="promo-cards__container">
     {% for block in section.blocks %}
       {% case block.type %}
@@ -48,6 +52,7 @@
   {% endif %}
 </div>
 
+
 <div class="promo-cards">
   <div class="promo-card" style="background-color: black; color: #fff; padding-top: 1.8rem;">
     <div class="promo-card__content">
@@ -84,7 +89,41 @@
 {% schema %}
 {
   "name": "Product Dropdowns",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "header_text",
+      "label": "Texto do Cabeçalho",
+      "default": "Free delivery over $100"
+    },
+    {
+      "type": "range",
+      "id": "header_font_size",
+      "label": "Tamanho da Fonte do Cabeçalho",
+      "min": 10,
+      "max": 36,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_top",
+      "label": "Padding Top do Cabeçalho",
+      "min": 0,
+      "max": 100,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_bottom",
+      "label": "Padding Bottom do Cabeçalho",
+      "min": 0,
+      "max": 100,
+      "default": 30,
+      "unit": "px"
+    }
+  ],
   "blocks": [
     {
       "type": "dropdown",
@@ -113,6 +152,21 @@
   ]
 }
 {% endschema %}
+
+{% style %}
+  .dropHeader {
+    padding-top: {{ section.settings.header_padding_top }}px;
+    padding-bottom: {{ section.settings.header_padding_bottom }}px;
+  }
+  
+  .dropHeader__title {
+    font-size: {{ section.settings.header_font_size }}px;
+    font-weight: 700;
+    text-align: start;
+    width: 500px;
+  }
+
+{% endstyle %}
 
 {% style %}
   .product-description-dropdown .dropdown {
@@ -188,7 +242,7 @@
 {% style %}
   .promo-cards {
     margin-top: -50px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     padding: 0 12px;
   }
 
@@ -208,7 +262,7 @@
     align-items: center;
     justify-content: center;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
     background-color: #e8f4ea;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -228,6 +282,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    right: 8px;
     top: 15px;
     width: 100%;
   }
