@@ -1,0 +1,139 @@
+{% comment %}
+  Section para sugestões de produtos "You may also like"
+{% endcomment %}
+
+<div class="you-may-also-like">
+  <h2 class="section-title">You may also like</h2>
+  <div class="product-slider">
+    {% assign collection_handle = section.settings.collection | default: product.collections.first.handle %}
+    {% assign collection = collections[collection_handle] %}
+    {% for product in collection.products limit: section.settings.product_limit %}
+      <div class="product-item">
+        <a href="{{ product.url }}" class="product-link">
+          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="product-image" width="300" height="300">
+          <div class="product-info">
+            <h3 class="product-title">{{ product.title }}</h3>
+            <h4 class="product-subtitle">{{ collection.title }}</h4>
+            <p class="product-price">
+              {{ product.price | money_without_trailing_zeros }}
+              {% if product.compare_at_price > product.price %}
+                <span class="compare-price">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
+              {% endif %}
+            </p>
+            {% comment %} <button class="view-button">View</button> {% endcomment %}
+          </div>
+        </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "You may also like",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Number of Products",
+      "min": 2,
+      "max": 10,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "You may also like",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .you-may-also-like {
+    padding: 40px 0;
+  }
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    padding: 0 15px;
+  }
+  .product-slider {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 0 15px;
+    scrollbar-width: none; 
+  }
+  .product-slider::-webkit-scrollbar {
+    display: none; 
+  }
+  .product-item {
+    flex: 0 0 auto;
+    width: 198px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+    transition: transform 0.3s ease;
+  }
+  .product-item:hover {
+    transform: translateY(-5px);
+  }
+  .product-link {
+    text-decoration: none;
+    color: inherit;
+  }
+  .product-image {
+    width: 100%;
+    height: 188px;
+    /* background: #f6f6f6; */
+    background: rgb(248, 248, 248);
+    border-bottom: 1.5px solid #e2e2e2;
+    border-radius: 8px 8px 0 0;
+  }
+  .product-info {
+    padding: 10px;
+  }
+  .product-title {
+    font-size: .8rem;
+    font-weight: bold;
+    margin: 0 0 5px;
+  }
+  .product-subtitle {
+    font-size: .8rem;
+    font-weight: 400;
+    color: #888;
+  }
+  .product-price {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+  }
+  .compare-price {
+    text-decoration: line-through;
+    color: #888;
+    margin-left: 5px;
+    font-weight: 400;
+  }
+  .view-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0 0 8px 8px;
+  }
+  .view-button:hover {
+    background-color: #333;
+  }
+{% endstyle %} 
