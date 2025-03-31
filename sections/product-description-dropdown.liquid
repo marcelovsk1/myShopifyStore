@@ -9,11 +9,13 @@
     </div>
   {% endif %}
 
+{% if section.settings.enable_drop_header %}
   <div class="dropHeader">
     <h2 class="dropHeader__title">{{ section.settings.header_text }}</h2>
   </div>
+  {% endif %} 
 
-  <div class="promo-cards__container">
+  {% comment %} <div class="promo-cards__container">
     {% for block in section.blocks %}
       {% case block.type %}
         {% when 'promo_card' %}
@@ -43,7 +45,7 @@
           </a>
       {% endcase %}
     {% endfor %}
-  </div>
+  </div> {% endcomment %}
 
   {% if section.blocks.size == 0 %}
     <div class="placeholder-noblocks" style="display: none;">
@@ -52,21 +54,22 @@
   {% endif %}
 </div>
 
-
+{% if section.settings.enable_promo_cards %}
 <div class="promo-cards">
-  <div class="promo-card" style="background-color: black; color: #fff; padding-top: 1.8rem;">
+  <a href="{{ section.settings.promo_card_1_path }}" class="promo-card" style="background-color: {{ section.settings.promo_cards_bg_color }}; color: {{ section.settings.promo_cards_text_color }};">
     <div class="promo-card__content">
       <h3 class="promo-card__title">Buy 2</h3>
       <div class="promo-card__text">Get 25% OFF</div>
     </div>
-  </div>
-  <div class="promo-card" style="background-color: black; color: #fff;">
+  </a>
+  <a href="{{ section.settings.promo_card_2_path }}" class="promo-card" style="background-color: {{ section.settings.promo_cards_bg_color }}; color: {{ section.settings.promo_cards_text_color }};">
     <div class="promo-card__content">
       <h3 class="promo-card__title">Buy 3</h3>
       <div class="promo-card__text">Get 40% OFF</div>
     </div>
-  </div>
+  </a>
 </div>
+{% endif %}
 
 <div class="product-description-dropdown">
   <div class="dropdown">
@@ -91,15 +94,51 @@
   "name": "Product Dropdowns",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "enable_drop_header",
+      "label": "Enable Drop Header",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_promo_cards",
+      "label": "Enable Promo Cards",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "promo_cards_bg_color",
+      "label": "Promo Cards Background Color",
+      "default": "#e8f4ea"
+    },
+    {
+      "type": "color",
+      "id": "promo_cards_text_color",
+      "label": "Promo Cards Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "promo_card_1_path",
+      "label": "Promo Card 1 Path",
+      "default": "/collections/all"
+    },
+    {
+      "type": "text",
+      "id": "promo_card_2_path",
+      "label": "Promo Card 2 Path",
+      "default": "/collections/all"
+    },
+    {
       "type": "text",
       "id": "header_text",
-      "label": "Texto do Cabeçalho",
+      "label": "Header Text",
       "default": "Free delivery over $100"
     },
     {
       "type": "range",
       "id": "header_font_size",
-      "label": "Tamanho da Fonte do Cabeçalho",
+      "label": "Header Font Size",
       "min": 10,
       "max": 36,
       "default": 14,
@@ -108,7 +147,7 @@
     {
       "type": "range",
       "id": "header_padding_top",
-      "label": "Padding Top do Cabeçalho",
+      "label": "Header Padding Top",
       "min": 0,
       "max": 100,
       "default": 60,
@@ -117,7 +156,7 @@
     {
       "type": "range",
       "id": "header_padding_bottom",
-      "label": "Padding Bottom do Cabeçalho",
+      "label": "Header Padding Bottom",
       "min": 0,
       "max": 100,
       "default": 30,
@@ -162,11 +201,13 @@
   .dropHeader__title {
     font-size: {{ section.settings.header_font_size }}px;
     font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 1px;
     text-align: start;
     width: 500px;
   }
 
-{% endstyle %}
+{% endstyle %} 
 
 {% style %}
   .product-description-dropdown .dropdown {
@@ -241,7 +282,7 @@
 
 {% style %}
   .promo-cards {
-    margin-top: -50px;
+    /* margin-top: -50px; */
     margin-bottom: 20px;
     padding: 0 12px;
   }
