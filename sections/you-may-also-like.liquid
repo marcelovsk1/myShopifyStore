@@ -4,26 +4,31 @@
 
 <div class="you-may-also-like">
   <h2 class="section-title">You may also like</h2>
-  <div class="product-slider">
+  <div class="product-slider js-draggable-slider">
     {% assign collection_handle = section.settings.collection | default: product.collections.first.handle %}
     {% assign collection = collections[collection_handle] %}
-    {% for product in collection.products limit: section.settings.product_limit %}
-      <div class="product-item">
-        <a href="{{ product.url }}" class="product-link">
-          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="product-image" width="300" height="300">
-          <div class="product-info">
-            <h3 class="product-title">{{ product.title }}</h3>
-            <h4 class="product-subtitle">{{ collection.title }}</h4>
-            <p class="product-price">
-              {{ product.price | money_without_trailing_zeros }}
-              {% if product.compare_at_price > product.price %}
-                <span class="compare-price">{{ product.compare_at_price | money_without_trailing_zeros }}</span>
-              {% endif %}
-            </p>
-            {% comment %} <button class="view-button">View</button> {% endcomment %}
-          </div>
-        </a>
-    </div>
+    {% assign current_product = product %}
+    {% assign products_shown = 0 %}
+    {% for recommended_product in collection.products %}
+      {% if recommended_product.id != current_product.id and products_shown < section.settings.product_limit %}
+        {% assign products_shown = products_shown | plus: 1 %}
+        <div class="product-item">
+          <a href="{{ recommended_product.url }}" class="product-link">
+            <img src="{{ recommended_product.featured_image | img_url: 'medium' }}" alt="{{ recommended_product.title }}" class="product-image" width="300" height="300">
+            <div class="product-info">
+              <h3 class="product-title">{{ recommended_product.title }}</h3>
+              <h4 class="product-subtitle">{{ collection.title }}</h4>
+              <p class="product-price">
+                {{ recommended_product.price | money_without_trailing_zeros }}
+                {% if recommended_product.compare_at_price > recommended_product.price %}
+                  <span class="compare-price">{{ recommended_product.compare_at_price | money_without_trailing_zeros }}</span>
+                {% endif %}
+              </p>
+              {% comment %} <button class="view-button">View</button> {% endcomment %}
+            </div>
+          </a>
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
@@ -69,19 +74,30 @@
     display: flex;
     overflow-x: auto;
     gap: 15px;
-    padding: 0 15px;
+    padding: 8px 15px;
     scrollbar-width: none; 
+    scroll-behavior: smooth;
+    cursor: grab;
+    -webkit-overflow-scrolling: touch;
   }
   .product-slider::-webkit-scrollbar {
     display: none; 
+  }
+  .product-slider.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+  }
+  .product-slider.dragging .product-link {
+    pointer-events: none;
   }
   .product-item {
     flex: 0 0 auto;
     width: 198px;
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
+    user-select: none;
   }
   .product-item:hover {
     transform: translateY(-5px);
@@ -137,3 +153,87 @@
     background-color: #333;
   }
 {% endstyle %} 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('.js-draggable-slider');
+    
+    sliders.forEach(slider => {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+      let isDragging = false;
+      
+      // Mouse Events
+      slider.addEventListener('mousedown', (e) => {
+        isDown = true;
+        slider.classList.add('dragging');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+      
+      slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        isDragging = false;
+        slider.classList.remove('dragging');
+      });
+      
+      slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('dragging');
+        // Se não houve arrasto, permite o clique no link
+        if (!isDragging) {
+          const link = e.target.closest('.product-link');
+          if (link) {
+            window.location.href = link.href;
+          }
+        }
+        isDragging = false;
+      });
+      
+      slider.addEventListener('mousemove', (e) => {
+        if(!isDown) return;
+        e.preventDefault();
+        isDragging = true;
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+      
+      // Touch Events
+      let touchStartTime;
+      
+      slider.addEventListener('touchstart', (e) => {
+        isDown = true;
+        touchStartTime = new Date().getTime();
+        slider.classList.add('dragging');
+        startX = e.touches[0].pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+      });
+      
+      slider.addEventListener('touchend', (e) => {
+        isDown = false;
+        slider.classList.remove('dragging');
+        const touchEndTime = new Date().getTime();
+        const touchDuration = touchEndTime - touchStartTime;
+        
+        // Se o toque durou menos que 200ms, considera como um tap
+        if (touchDuration < 200 && !isDragging) {
+          const link = e.target.closest('.product-link');
+          if (link) {
+            window.location.href = link.href;
+          }
+        }
+        isDragging = false;
+      });
+      
+      slider.addEventListener('touchmove', (e) => {
+        if(!isDown) return;
+        isDragging = true;
+        const x = e.touches[0].pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        slider.scrollLeft = scrollLeft - walk;
+      });
+    });
+  });
+</script> 

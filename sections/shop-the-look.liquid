@@ -2,33 +2,42 @@
   Section para "Shop the Look"
 {% endcomment %}
 
-<div class="shop-the-look-section">
-  <h2 class="shop-the-look-title">Shop the Look</h2>
-  <div class="shop-the-look-container">
-    {% if section.settings.product != blank %}
-      {% assign product = all_products[section.settings.product] %}
-      <div class="shop-the-look-item">
-        <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="shop-the-look-image" width="300" height="300">
-        <div class="shop-the-look-info">
-          <h3 class="shop-the-look-product-title">{{ product.title }}</h3>
-          <h6 class="shop-the-look-product-collection">{{ product.collections.first.title }}</h6>
-          <p class="shop-the-look-product-price">{{ product.price | money_without_trailing_zeros }}</p>
-          <form action="/cart/add" method="post">
-            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-            <button type="submit" class="shop-the-look-add-to-cart-button">Add to Cart</button>
-          </form>
+{% if section.settings.enable_section %}
+  <div class="shop-the-look-section">
+    <h2 class="shop-the-look-title">Shop the Look</h2>
+    <div class="shop-the-look-container">
+      {% if section.settings.product != blank %}
+        {% assign product = all_products[section.settings.product] %}
+        <div class="shop-the-look-item">
+          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="shop-the-look-image" width="300" height="300">
+          <div class="shop-the-look-info">
+            <div class="shop-the-look-product-info">
+            <h3 class="shop-the-look-product-title">{{ product.title }}</h3>
+            <h6 class="shop-the-look-product-collection">{{ product.collections.first.title }}</h6>
+            <p class="shop-the-look-product-price">{{ product.price | money_without_trailing_zeros }}</p>
+            <form action="/cart/add" method="post" class="atc-form">
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="shop-the-look-add-to-cart-button">Add to Cart</button>
+            </form>
+          </div>
         </div>
-      </div>
-    {% else %}
-      <p>Select a product to display.</p>
-    {% endif %}
+      {% else %}
+        <p>Select a product to display.</p>
+      {% endif %}
+    </div>
   </div>
-</div>
+{% endif %}
 
 {% schema %}
 {
   "name": "Shop the Look",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_section",
+      "label": "Enable Section",
+      "default": true
+    },
     {
       "type": "product",
       "id": "product",
@@ -46,70 +55,84 @@
 
 {% style %}
   .shop-the-look-section {
-    padding: 20px 0;
+    padding: 15px 0;
   }
   .shop-the-look-title {
-    font-size: .9rem;
+    font-size: .8rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     padding: 0 15px;
+  }
+  .atc-form {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
   }
   .shop-the-look-container {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     padding: 0 10px;
-    /* border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9; */
+    max-width: 600px;
+    margin: 0 auto;
   }
   .shop-the-look-item {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 12px;
     width: 100%;
   }
   .shop-the-look-image {
-    width: 150px;
-    height: auto;
+    width: auto;
+    height: 90px;
     background: #f6f6f6;
-    border-radius: 8px;
+    border-radius: 6px;
   }
   .shop-the-look-info {
     flex-grow: 1;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  .shop-the-look-product-info {
+    margin-bottom: 5px;
   }
   .shop-the-look-product-title {
-    font-size: .9rem;
+    font-size: .8rem;
     font-weight: bold;
     margin: 0 0 1px;
   }
   .shop-the-look-product-collection {
     font-size: .7rem;
     font-weight: 400;
+    margin: 0;
+    color: #666;
   }
   .shop-the-look-product-price {
-    font-size: .9rem;
+    font-size: .8rem;
+    font-weight: 600;
     color: #000;
-    margin-bottom: 10px;
+    margin: 5px 0;
   }
   .shop-the-look-add-to-cart-button {
     background-color: #000;
     color: #fff;
     border: none;
-    margin-top: 10px;
-    padding: 8px 69px;
+    padding: 6px 20px;
     font-weight: 600;
     font-size: .7rem;
     cursor: pointer;
-    border-radius: 5px;
-    align-self: flex-start;
+    border-radius: 4px;
+    align-self: flex-end;
   }
   .shop-the-look-add-to-cart-button:hover {
     background-color: #333;
