@@ -4,26 +4,29 @@
 
 {% if section.settings.enable_section %}
   <div class="shop-the-look-section">
-    <h2 class="shop-the-look-title">Shop the Look</h2>
+    <h2 class="shop-the-look-title">{{ section.settings.title | default: 'Shop the Look' }}</h2>
     <div class="shop-the-look-container">
-      {% if section.settings.product != blank %}
-        {% assign product = all_products[section.settings.product] %}
-        <div class="shop-the-look-item">
-          <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="shop-the-look-image" width="300" height="300">
-          <div class="shop-the-look-info">
-            <div class="shop-the-look-product-info">
-            <h3 class="shop-the-look-product-title">{{ product.title }}</h3>
-            <h6 class="shop-the-look-product-collection">{{ product.collections.first.title }}</h6>
-            <p class="shop-the-look-product-price">{{ product.price | money_without_trailing_zeros }}</p>
-            <form action="/cart/add" method="post" class="atc-form">
-              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
-              <button type="submit" class="shop-the-look-add-to-cart-button">Add to Cart</button>
-            </form>
-          </div>
-        </div>
-      {% else %}
-        <p>Select a product to display.</p>
-      {% endif %}
+      {% for block in section.blocks %}
+        {% if block.settings.collection.handle == collection.handle %}
+          {% assign product = all_products[block.settings.product] %}
+          {% if product != blank %}
+            <div class="shop-the-look-item">
+              <img src="{{ product.featured_image | img_url: 'medium' }}" alt="{{ product.title }}" class="shop-the-look-image" width="300" height="300">
+              <div class="shop-the-look-info">
+                <div class="shop-the-look-product-info">
+                  <h3 class="shop-the-look-product-title">{{ product.title }}</h3>
+                  <h6 class="shop-the-look-product-collection">{{ product.collections.first.title }}</h6>
+                  <p class="shop-the-look-product-price">{{ product.price | money_without_trailing_zeros }}</p>
+                  <form action="/cart/add" method="post" class="atc-form">
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                    <button type="submit" class="shop-the-look-add-to-cart-button">Add to Cart</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
     </div>
   </div>
 {% endif %}
@@ -39,9 +42,28 @@
       "default": true
     },
     {
-      "type": "product",
-      "id": "product",
-      "label": "Product"
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Shop the Look"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_product",
+      "name": "Collection Product",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product to Display"
+        }
+      ]
     }
   ],
   "presets": [

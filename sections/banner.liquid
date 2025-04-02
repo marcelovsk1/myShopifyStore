@@ -1,0 +1,103 @@
+<div class="banner-section">
+    <div class="banner-container">
+      <img src="{{ section.settings.desktop_image | img_url: 'master' }}" alt="{{ section.settings.alt_text }}" class="banner-image desktop-only {{ section.settings.desktop_size }}" width="100%" height="auto">
+      <img src="{{ section.settings.mobile_image | img_url: 'master' }}" alt="{{ section.settings.alt_text }}" class="banner-image mobile-only {{ section.settings.mobile_size }}" width="100%" height="auto">
+    </div>
+  </div>
+  
+  {% style %}
+    .banner-section {
+      width: 100%;
+      overflow: hidden;
+      margin: 0 0 35px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1) 
+    }
+    .banner-container {
+      position: relative;
+      width: 100%;
+    }
+    .banner-image {
+      width: 100%;
+      height: auto;
+      display: none;
+      object-fit: cover;
+    }
+    .desktop-only {
+      display: block;
+    }
+    .mobile-only {
+      display: none;
+    }
+    .small {
+      height: 200px;
+    }
+    .medium {
+      height: 300px;
+    }
+    .large {
+      height: 400px;
+    }
+    .extra_large {
+      height: 500px;
+    }
+    @media screen and (max-width: 749px) {
+      .desktop-only {
+        display: none;
+      }
+      .mobile-only {
+        display: block;
+      }
+    }
+  {% endstyle %}
+  
+  {% schema %}
+  {
+    "name": "Banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "desktop_image",
+        "label": "Desktop Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile Image"
+      },
+      {
+        "type": "text",
+        "id": "alt_text",
+        "label": "Alt Text"
+      },
+      {
+        "type": "select",
+        "id": "desktop_size",
+        "label": "Desktop Banner Size",
+        "options": [
+          { "value": "small", "label": "Small" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "large", "label": "Large" },
+          { "value": "extra_large", "label": "Extra Large" }
+        ],
+        "default": "medium"
+      },
+      {
+        "type": "select",
+        "id": "mobile_size",
+        "label": "Mobile Banner Size",
+        "options": [
+          { "value": "small", "label": "Small" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "large", "label": "Large" },
+          { "value": "extra_large", "label": "Extra Large" }
+        ],
+        "default": "medium"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Banner"
+      }
+    ]
+  }
+  {% endschema %} 
