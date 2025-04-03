@@ -160,7 +160,7 @@ class Wishlist {
       <div class="wishlist-drawer-overlay"></div>
       <div id="WishlistDrawer" class="wishlist-drawer">
         <div class="wishlist-drawer__header">
-          <h2 class="wishlist-drawer__title">My Wishlist</h2>
+          <h2 class="wishlist-drawer__title">Wishlist</h2>
           <button class="wishlist-drawer__close" aria-label="Fechar">
             <svg aria-hidden="true" focusable="false" role="presentation" width="16" height="16" viewBox="0 0 16 16">
               <path d="M15 1.6L13.4 0 8 5.4 2.6 0 1 1.6 6.4 7 1 12.4 2.6 14 8 8.6 13.4 14 15 12.4 9.6 7z" fill="currentColor"/>
@@ -249,12 +249,12 @@ class Wishlist {
               <form action="/cart/add" method="post" class="wishlist-drawer__product-form">
                 <input type="hidden" name="id" value="${variant.id}">
                 <input type="hidden" name="quantity" value="1">
+                </form>
+                </div>
+                </div>
                 <button type="submit" class="btn btn--small wishlist-drawer__product-add" ${!variant.available ? 'disabled' : ''}>
                   ${variant.available ? 'Add to Bag' : 'Sold Out'}
                 </button>
-              </form>
-            </div>
-          </div>
         </div>
       </div>
     `;
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
       width: 450px;
       max-width: 100%;
       height: 100%;
-      background-color: #f1f1f1;
+      background-color: #f5f5f5;
       z-index: 1001;
       overflow-y: auto;
       transition: right 0.3s ease-in-out;
@@ -395,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
       flex-direction: column;
       margin-bottom: 0;
       position: relative;
-      // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
       overflow: hidden;
       height: 100%;
@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     .wishlist-drawer__product-image {
       width: 100%;
-      height: auto;
+      height: 150px;
       margin-bottom: 0;
       overflow: hidden;
       background: rgb(248, 248, 248);
@@ -447,8 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
       position: absolute;
       right: 5px;
       z-index: 5;
-      background: rgba(255,255,255,0.7);
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       border-radius: 50%;
       width: 26px;
       height: 26px;
@@ -508,9 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     @media screen and (max-width: 480px) {
-      .wishlist-drawer__products {
-        grid-template-columns: 1fr;
-      }
+
       
       .wishlist-drawer {
         width: 100%;

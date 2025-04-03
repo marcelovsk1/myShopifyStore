@@ -2042,9 +2042,10 @@ a[href^="tel"] {
 }
 
 .text-link--accent {
-  color: $color-btn-primary;
-  border-bottom: 1px solid currentColor;
-  padding-bottom: 1px;
+  color: black;
+  font-weight: 600;
+  // border-bottom: 1px solid currentColor;
+  padding: 15px 0;
 
   &:not([disabled]):hover,
   &:focus {
@@ -4224,6 +4225,8 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 
 .cart-header__title {
   margin-bottom: 0.5rem;
+  padding: 1.5rem 0;
+  color: black;
 
   @include media-query($medium-up) {
     margin-bottom: 1rem;
@@ -4301,7 +4304,7 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .cart__image-wrapper {
-  padding-right: 1.5rem;
+  // padding-right: 1.5rem;
   flex: 5rem 0 0;
 
   @include media-query($medium-up) {
@@ -4399,6 +4402,8 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 
 .cart__row {
   border-bottom: 1px solid $color-border;
+  background-color: white;
+  border-radius: 10px !important;
 
   p {
     margin-bottom: 0;
@@ -4413,12 +4418,14 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 
     @include media-query($medium-up) {
       vertical-align: middle;
+
     }
   }
 }
 
 .cart__row--heading {
   color: $color-text;
+  display: none;
 }
 
 .cart__removed-product-details {
@@ -4471,6 +4478,9 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
   margin-bottom: 0;
   min-height: 44px;
   width: 100%;
+  border-radius: 8px;
+  background: black;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 
   + .cart__submit {
     margin-top: 10px;
