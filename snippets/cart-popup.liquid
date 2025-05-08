@@ -1,45 +1,227 @@
 {%- style -%}
-  {% assign cart_popup_box_shadow = settings.color_borders | color_modify: 'alpha', 0.5 %}
+.cart-popup-overlay {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.32);
+  z-index: 1000;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cart-popup-overlay.active {
+  display: block;
+  opacity: 1;
+}
 
+.cart-popup {
+  position: fixed; top: 0; right: 0; height: 100vh;
+  width: 420px; max-width: 98vw;
+  background: #fff; border-radius: 0 0 0 12px; box-shadow: -4px 0 32px rgba(0,0,0,0.18);
+  z-index: 1001; padding: 32px 24px 20px 24px;
+  display: flex; flex-direction: column; gap: 16px;
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+.cart-popup.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.cart-popup__header {
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+}
+.cart-popup__close { background: none; border: none;     position: relative;
+    top: -5px;
+ font-size: 1.7rem; cursor: pointer; }
+.cart-popup__items { flex: 1; max-height: 70vh; overflow-y: auto; margin-bottom: 12px; }
+.cart-popup__item {
+  position: relative;
+  display: flex; gap: 16px; align-items: center; border-bottom: 1px solid #eee; padding: 16px 0 16px 0;
+  min-height: 80px;
+}
+.cart-popup__item-img { width: 64px; height: 64px; object-fit: cover; border-radius: 6px; }
+.cart-popup__item-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+.cart-popup__item-title { font-weight: bold; font-size: 1.08rem; margin: 0 0 2px 0; }
+.cart-popup__item-price { font-size: 1rem; color: #444; }
+.cart-popup__item-qty { font-size: 0.97rem; color: #666; }
+.cart-popup__item-remove {
+  position: absolute; top: 8px; right: 8px;
+  color: #d00; background: none; border: none; cursor: pointer; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center; padding: 4px;
+  transition: color 0.2s;
+}
+.cart-popup__item-remove:hover { color: #a00; }
+.cart-popup__footer { margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+.cart-popup__cta-link { background: #222; color: #fff; border: none; border-radius: 6px; padding: 14px; text-align: center; font-weight: bold; text-decoration: none; font-size: 1.08rem; }
+.cart-popup__cta-link:hover { background: #111; }
+.cart-popup__dismiss-button { background: none; border: none; color: #222; font-weight: bold; cursor: pointer; font-size: 1rem; }
+
+@media (max-width: 600px) {
   .cart-popup {
-    box-shadow: 1px 1px 10px 2px {{ cart_popup_box_shadow }};
+    width: 100vw;
+    left: 0; right: 0;
+    top: auto; bottom: 0;
+    height: 70vh;
+    max-width: 100vw;
+    border-radius: 16px 16px 0 0;
+    padding: 14px 4px 8px 4px;
+    transform: translateY(100%);
+    transition: opacity 0.35s cubic-bezier(.4,0,.2,1), transform 0.35s cubic-bezier(.4,0,.2,1);
   }
+  .cart-popup.active {
+    transform: translateY(0);
+  }
+  .cart-popup__header { padding: 5px 8px; }
+  .cart-popup__items { max-height: 45vh; margin-bottom: 8px; }
+  .cart-popup__item {
+    gap: 10px;         padding: 10px 20px 20px;
+    min-height: 60px;
+  }
+  .cart-popup__item-img { width: 100px; height: auto; background: #f1f1f1; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+  .cart-popup__item-title { font-size: 0.98rem; }
+  .cart-popup__item-price { font-size: 0.93rem; }
+  .cart-popup__item-qty { font-size: 0.92rem; }
+  .cart-popup__item-remove { top: 4px; right: 4px; font-size: 1.1rem; }
+  .cart-popup__footer { gap: 7px; }
+  .cart-popup__cta-link {
+    font-size: 1rem;
+    padding: 10px 0;
+    width: 80%;
+    margin: 0 auto;
+    min-width: 120px;
+  }
+}
 {%- endstyle -%}
 
-<div class="cart-popup-wrapper cart-popup-wrapper--hidden" role="dialog" aria-modal="true" aria-labelledby="CartPopupHeading" data-cart-popup-wrapper>
-  <div class="cart-popup" data-cart-popup tabindex="-1">
-    <div class="cart-popup__header">
-      <h2 id="CartPopupHeading" class="cart-popup__heading">{{ 'cart.popup.added_to_cart' | t }}</h2>
-      <button class="cart-popup__close" aria-label="{{ 'general.accessibility.close_modal' | t }}" data-cart-popup-close>{% include 'icon-close' %}</button>
-    </div>
-    <div class="cart-popup-item">
-      <div class="cart-popup-item__image-wrapper hide" data-cart-popup-image-wrapper>
-        <div class="cart-popup-item__image cart-popup-item__image--placeholder" data-cart-popup-image-placeholder>
-          <div data-placeholder-size></div>
-          <div class="placeholder-background placeholder-background--animation"></div>
-        </div>
-      </div>
-      <div class="cart-popup-item__description">
-        <div>
-          <h3 class="cart-popup-item__title" data-cart-popup-title></h3>
-          <ul class="product-details" aria-label="{{ 'cart.popup.product_details' | t }}" data-cart-popup-product-details></ul>
-        </div>
-        <div class="cart-popup-item__quantity">
-          <span class="visually-hidden" data-cart-popup-quantity-label></span>
-          <span aria-hidden="true">{{ 'cart.popup.quantity' | t }}:</span>
-          <span aria-hidden="true" data-cart-popup-quantity></span>
-        </div>
-      </div>
-    </div>
-
-    <a href="{{ routes.cart_url }}" class="cart-popup__cta-link btn btn--secondary-accent">
-      {{ 'products.product.view_cart' | t }} (<span data-cart-popup-cart-quantity></span>)
-    </a>
-
-    <div class="cart-popup__dismiss">
-      <button class="cart-popup__dismiss-button text-link text-link--accent" data-cart-popup-dismiss>
-        {{ 'cart.general.continue_shopping' | t }}
-      </button>
-    </div>
+<div class="cart-popup-overlay" id="cart-popup-overlay"></div>
+<div class="cart-popup" id="cart-popup">
+  <div class="cart-popup__header">
+    <span>YOUR CART</span>
+    <button class="cart-popup__close" id="cart-popup-close" aria-label="Fechar">&times;</button>
+  </div>
+  <div class="cart-popup__items" id="cart-popup-items"></div>
+  <div class="cart-popup__footer">
+    <a href="/cart" class="cart-popup__cta-link" id="cart-popup-viewcart">View Cart (<span id="cart-popup-count"></span>)</a>
+    <button class="cart-popup__dismiss-button" id="cart-popup-dismiss">Continue shopping</button>
   </div>
 </div>
+
+<script>
+function formatMoney(cents) {
+  // Ajuste para o formato desejado, ex: R$ 10,00
+  return 'R$ ' + (cents / 100).toFixed(2).replace('.', ',');
+}
+
+function openCartPopup() {
+  fetch('/cart.js')
+    .then(res => res.json())
+    .then(cart => {
+      const itemsDiv = document.getElementById('cart-popup-items');
+      const countSpan = document.getElementById('cart-popup-count');
+      itemsDiv.innerHTML = '';
+      countSpan.textContent = cart.item_count;
+
+      if (cart.items.length === 0) {
+        itemsDiv.innerHTML = '<div style="text-align:center;color:#888;">Your cart is empty.</div>';
+      } else {
+        cart.items.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'cart-popup__item';
+          div.innerHTML = `
+            <img src="${item.image}" alt="${item.product_title}" class="cart-popup__item-img">
+            <div class="cart-popup__item-info">
+              <div class="cart-popup__item-title">${item.product_title}</div>
+              <div class="cart-popup__item-price">${formatMoney(item.price)}</div>
+              <div class="cart-popup__item-qty">Qtd: ${item.quantity}</div>
+              <button class="cart-popup__item-remove" data-line="${item.key}" aria-label="Remover">
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <rect x="5" y="7" width="14" height="12" rx="2"/>
+                  <path d="M3 7h18M10 11v4M14 11v4M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+                </svg>
+              </button>
+            </div>
+          `;
+          itemsDiv.appendChild(div);
+        });
+      }
+
+      document.getElementById('cart-popup').classList.add('active');
+      document.getElementById('cart-popup-overlay').classList.add('active');
+
+      // Adiciona eventos de remover
+      itemsDiv.querySelectorAll('.cart-popup__item-remove').forEach(btn => {
+        btn.onclick = function() {
+          removeCartItem(btn.getAttribute('data-line'));
+        };
+      });
+    });
+}
+
+function closeCartPopup() {
+  document.getElementById('cart-popup').classList.remove('active');
+  document.getElementById('cart-popup-overlay').classList.remove('active');
+}
+
+// Remover item do carrinho
+function removeCartItem(line) {
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: line, quantity: 0 })
+  })
+  .then(res => res.json())
+  .then(() => openCartPopup());
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Botão do carrinho na header
+  var cartIconBtn = document.getElementById('cart-icon-btn');
+  if (cartIconBtn) {
+    cartIconBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      openCartPopup();
+    });
+  }
+  document.getElementById('cart-popup-close').onclick = closeCartPopup;
+  document.getElementById('cart-popup-dismiss').onclick = closeCartPopup;
+  document.getElementById('cart-popup-overlay').onclick = closeCartPopup;
+
+  // Seleciona todos os formulários de produto
+  document.querySelectorAll('form[action^="/cart/add"]').forEach(function(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Desabilita o botão e mostra o loader (opcional)
+      var btn = form.querySelector('[type="submit"][name="add"]');
+      if (btn) btn.disabled = true;
+      var loader = form.querySelector('[data-loader]');
+      if (loader) loader.classList.remove('hide');
+
+      // Pega os dados do formulário
+      var formData = new FormData(form);
+      var data = {};
+      formData.forEach((value, key) => { data[key] = value; });
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.json())
+      .then(function(response) {
+        // Reabilita o botão e esconde o loader
+        if (btn) btn.disabled = false;
+        if (loader) loader.classList.add('hide');
+        openCartPopup(); // <-- Abre o popup!
+      })
+      .catch(function() {
+        if (btn) btn.disabled = false;
+        if (loader) loader.classList.add('hide');
+        alert('Erro ao adicionar ao carrinho.');
+      });
+    });
+  });
+});
+</script>

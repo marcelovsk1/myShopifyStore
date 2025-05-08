@@ -21,7 +21,7 @@
           "main_linklist": "main-menu",
           "message": true,
           "home_page_only": true,
-          "message_text": "Announce something here",
+          "message_text": "Summer Sale | Buy 2 Get 25% OFF",
           "message_link": "",
           "color_bg": "#3a3a3a",
           "color_text": "#ffffff"
@@ -214,6 +214,7 @@
       },
       "hero_giB9VF": {
         "type": "hero",
+        "disabled": true,
         "settings": {
           "image": "shopify://shop_images/Screenshot_2025-03-20_at_15.54.49.png",
           "alignment": "center",
@@ -305,10 +306,10 @@
         "type": "product-template",
         "settings": {
           "show_quantity_selector": false,
-          "show_variant_labels": true,
+          "show_variant_labels": false,
           "show_vendor": false,
-          "enable_payment_button": true,
-          "show_share_buttons": true,
+          "enable_payment_button": false,
+          "show_share_buttons": false,
           "media_size": "medium",
           "enable_image_zoom": true,
           "enable_video_looping": false
@@ -354,14 +355,100 @@
           "desktop_size": "medium",
           "mobile_size": "small"
         }
+      },
+      "banner_Th4CkC": {
+        "type": "banner",
+        "settings": {
+          "mobile_image": "shopify://shop_images/Screenshot_2025-03-20_at_15.54.49.png",
+          "alt_text": "",
+          "desktop_size": "medium",
+          "mobile_size": "large"
+        }
+      },
+      "shop-the-look": {
+        "type": "shop-the-look",
+        "blocks": {
+          "collection_product_adyMqt": {
+            "type": "collection_product",
+            "settings": {
+              "collection": "hydrogen",
+              "product": "nike-brasil-1998"
+            }
+          },
+          "collection_product_DTzCMn": {
+            "type": "collection_product",
+            "settings": {
+              "collection": "running",
+              "product": "cf-montreal-25-26"
+            }
+          },
+          "collection_product_C9JVgd": {
+            "type": "collection_product",
+            "settings": {
+              "collection": "jerseys",
+              "product": "gazelle-indoor"
+            }
+          }
+        },
+        "block_order": [
+          "collection_product_adyMqt",
+          "collection_product_DTzCMn",
+          "collection_product_C9JVgd"
+        ],
+        "settings": {
+          "enable_section": true,
+          "title": "Shop the Look"
+        }
+      },
+      "product-description-dropdown": {
+        "type": "product-description-dropdown",
+        "settings": {
+          "enable_drop_header": true,
+          "enable_promo_cards": true,
+          "promo_cards_bg_color": "#000000",
+          "promo_cards_text_color": "#ffffff",
+          "promo_card_1_path": "/collections/all",
+          "promo_card_2_path": "/collections/all",
+          "header_text": "Free delivery over $100",
+          "header_font_size": 14,
+          "header_padding_top": 0,
+          "header_padding_bottom": 0
+        }
+      },
+      "you-may-also-like": {
+        "type": "you-may-also-like",
+        "settings": {
+          "collection": "",
+          "product_limit": 4
+        }
+      },
+      "cart-template": {
+        "type": "cart-template",
+        "settings": {
+          "cart_ajax_enable": true,
+          "cart_notes_enable": false
+        }
+      },
+      "featured_collection_slider_xVBAcL": {
+        "type": "featured-collection-slider",
+        "name": "Coleção Slider",
+        "settings": {
+          "title": "Coleção em Destaque",
+          "text": "<p>Exiba seus produtos em destaque em um slider elegante</p>",
+          "text_alignment": "center",
+          "collection": "fantasy",
+          "products_to_show": 8
+        }
       }
     },
     "content_for_index": [
       "hero-2",
       "promo_cards_EBd7EM",
       "collection_list_QNjVwX",
+      "featured_collection_slider_xVBAcL",
       "featured_collection_slider_HVCWgE",
       "hero_giB9VF",
+      "banner_Th4CkC",
       "featured_collection_slider_aCEhcg",
       "hero_KeT6Pz",
       "banner_baxh9e",

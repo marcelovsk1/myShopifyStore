@@ -118,11 +118,11 @@
           {% include 'icon-heart' with width: 20, height: 20 %}
           <span class="site-header__wishlist-count" data-wishlist-count style="display: none;">0</span>
         </button>
-        <a href="/cart" class="site-header__icon site-header__cart">
+        <button id="cart-icon-btn" class="site-header__icon site-header__cart" aria-label="Abrir carrinho">
           <span class="icon icon-cart">
             {% include 'icon-cart' with width: 20, height: 20 %}
           </span>
-        </a>
+        </button>
       </div>
     </div>
   </header>
@@ -365,6 +365,31 @@
 {% include 'search-bar' %}
 
 {% include 'off-canvas-menu' %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var cartIconBtn = document.getElementById('cart-icon-btn');
+    var cartPopupWrapper = document.querySelector('[data-cart-popup-wrapper]');
+    var cartPopupClose = document.querySelector('[data-cart-popup-close]');
+    var cartPopupDismiss = document.querySelector('[data-cart-popup-dismiss]');
+
+    function openCartPopup() {
+      cartPopupWrapper.classList.remove('cart-popup-wrapper--hidden');
+    }
+
+    function closeCartPopup() {
+      cartPopupWrapper.classList.add('cart-popup-wrapper--hidden');
+    }
+
+    cartIconBtn.addEventListener('click', function(event) {
+      event.preventDefault(); // Previne o comportamento padrão de redirecionamento
+      openCartPopup();
+    });
+
+    cartPopupClose.addEventListener('click', closeCartPopup);
+    cartPopupDismiss.addEventListener('click', closeCartPopup);
+  });
+</script>
 
 {% schema %}
 {
